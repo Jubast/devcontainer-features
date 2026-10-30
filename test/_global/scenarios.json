@@ -1,0 +1,32 @@
+{
+  "all": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "herdr": {},
+      "gcm": {},
+      "glab": {},
+      "openshift-cli": {},
+      "kubeconform": {},
+      "pluto": {},
+      "yq": {},
+      "conftest": {},
+      "shellcheck": {},
+      "yamllint": {}
+    }
+  },
+  "all-debian": {
+    "image": "debian:12",
+    "features": {
+      "herdr": {},
+      "gcm": {},
+      "glab": {},
+      "openshift-cli": {},
+      "kubeconform": {},
+      "pluto": {},
+      "yq": {},
+      "conftest": {},
+      "shellcheck": {},
+      "yamllint": {}
+    }
+  }
+}
