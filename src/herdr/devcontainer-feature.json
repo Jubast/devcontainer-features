@@ -1,6 +1,6 @@
 {
   "id": "herdr",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "herdr",
   "description": "Installs the herdr CLI from GitHub releases, verified against the sha256 shipped in the feature's checksums.txt.",
   "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/herdr",

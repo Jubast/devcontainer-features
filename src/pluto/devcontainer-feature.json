@@ -1,6 +1,6 @@
 {
   "id": "pluto",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "Pluto",
   "description": "Installs Pluto (deprecated Kubernetes API detector) from GitHub releases, verified against the published checksums.txt.",
   "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/pluto",

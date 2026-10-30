@@ -1,6 +1,6 @@
 {
   "id": "openshift-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "OpenShift CLI",
   "description": "Installs the OpenShift CLI (oc) from mirror.openshift.com, verified against the mirror's sha256sum.txt.",
   "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/openshift-cli",

@@ -1,6 +1,6 @@
 {
   "id": "conftest",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "Conftest",
   "description": "Installs Conftest from GitHub releases, verified against the published checksums.txt.",
   "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/conftest",

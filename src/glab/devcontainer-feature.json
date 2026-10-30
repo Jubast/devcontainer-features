@@ -1,6 +1,6 @@
 {
   "id": "glab",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "GitLab CLI",
   "description": "Installs the GitLab CLI (glab) from GitLab releases, verified against the published checksums.txt.",
   "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/glab",

@@ -1,6 +1,6 @@
 {
   "id": "yq",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "yq",
   "description": "Installs mikefarah/yq v4 from GitHub releases, verified against the published checksums.",
   "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/yq",
