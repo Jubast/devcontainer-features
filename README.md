@@ -41,7 +41,7 @@ Not here, use the official features: kubectl/helm, python, node, dotnet, github-
 - **Pinning.** Set `version` to an exact release (`"version": "0.71.1"`; `oc`: a mirror directory such as `4.16.20`). `latest` resolves at build time; `shellcheck` and `yamllint` `latest` mean the distro apt package.
 - **No `curl | bash`.** Scripts are downloaded to a temp dir, verified, then installed; the `version` input is validated before it reaches a URL.
 - **CI.** Workflows use only `actions/*` and `devcontainers/*`, pinned to full commit SHAs, with `contents: read`; `packages: write` only on the release job. The devcontainer CLI is pinned to an exact version. `scripts/lint.sh` enforces the workflow rules.
-- **GitHub API.** Latest tags come from the `releases/latest` redirect; digests use the unauthenticated API (60 requests/hour). Set `GITHUB_TOKEN` in the build environment if you hit the limit.
+- **GitHub API.** Latest tags come from the `releases/latest` redirect; digests (herdr, gcm, pinned shellcheck) use the unauthenticated API, limited to 60 requests/hour per IP. Hitting the limit fails the install; verification is never skipped. The installers send `GITHUB_TOKEN` if it is set in the image environment during the build.
 
 ## Migrating the workspace devcontainer
 
