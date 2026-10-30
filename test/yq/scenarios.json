@@ -1,0 +1,10 @@
+{
+  "pinned": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "yq": {
+        "version": "4.44.3"
+      }
+    }
+  }
+}
