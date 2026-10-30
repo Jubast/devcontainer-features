@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 # --- common (identical in every install.sh, enforced by scripts/lint.sh) ---
-set -euo pipefail
+set -Eeuo pipefail
+trap 'echo "ERROR: install.sh line ${LINENO}: ${BASH_COMMAND}" >&2' ERR
+export DEBIAN_FRONTEND=noninteractive
 
 [ "$(id -u)" -eq 0 ] || { echo "Must run as root." >&2; exit 1; }
 
