@@ -7,6 +7,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 [ "$(id -u)" -eq 0 ] || { echo "Must run as root." >&2; exit 1; }
 
+FEATURE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TMP_DIR"' EXIT
 
@@ -20,8 +21,6 @@ ensure_pkgs() {
 }
 
 download() { curl -fsSL --retry 3 -o "$2" "$1"; }
-
-gh_api() { curl -fsSL --retry 3 ${GITHUB_TOKEN:+-H "Authorization: Bearer $GITHUB_TOKEN"} "$1"; }
 
 # Newest release tag, from the redirect of a ".../releases/latest" URL (no API quota).
 latest_tag() {
@@ -55,10 +54,15 @@ verify_sha256() {
     echo "sha256 ok: $(basename "$1")"
 }
 
-# sha256 GitHub recorded for a release asset: gh_digest OWNER/REPO TAG ASSET.
-gh_digest() {
-    gh_api "https://api.github.com/repos/$1/releases/tags/$2" \
-        | jq -r --arg n "$3" '.assets[] | select(.name == $n) | .digest // empty' | sed 's/^sha256://'
+# Features without upstream checksums ship "<version> <asset> <sha256>" lines in checksums.txt.
+listed_versions() { awk '$1 !~ /^#/ && NF { print $1 }' "$FEATURE_DIR/checksums.txt" | sort -uV; }
+
+# shipped_sha256 VERSION ASSET: the shipped hash, or abort naming the listed versions.
+shipped_sha256() {
+    local h
+    h="$(awk -v v="$1" -v a="$2" '$1 == v && $2 == a { print $3; exit }' "$FEATURE_DIR/checksums.txt")"
+    [ -n "$h" ] || { echo "No checksum shipped for $2 (version $1). Listed versions: $(listed_versions | tr '\n' ' ')" >&2; exit 1; }
+    echo "$h"
 }
 # --- end common ---
 
@@ -77,15 +81,17 @@ case "$(uname -m)" in
     *) echo "Unsupported architecture: $(uname -m)" >&2; exit 1 ;;
 esac
 
-ensure_pkgs curl ca-certificates jq tar xz-utils
-TAG="$(normalize_tag "$VERSION")"
-ASSET="shellcheck-${TAG}.linux.${ARCH}.tar.xz"
+VERSION="$(normalize_tag "$VERSION")"
+VERSION="${VERSION#v}"
+ASSET="shellcheck-v${VERSION}.linux.${ARCH}.tar.xz"
 
-# Upstream publishes no checksum file; use the sha256 GitHub recorded for the asset.
-echo "Installing shellcheck ${TAG} (${ARCH})"
-download "https://github.com/koalaman/shellcheck/releases/download/${TAG}/${ASSET}" "${TMP_DIR}/${ASSET}"
-verify_sha256 "${TMP_DIR}/${ASSET}" "$(gh_digest koalaman/shellcheck "$TAG" "$ASSET")"
+ensure_pkgs curl ca-certificates tar xz-utils
+EXPECTED="$(shipped_sha256 "$VERSION" "$ASSET")"
 
-tar -xJf "${TMP_DIR}/${ASSET}" -C "$TMP_DIR" "shellcheck-${TAG}/shellcheck"
-install -m 0755 "${TMP_DIR}/shellcheck-${TAG}/shellcheck" /usr/local/bin/shellcheck
+echo "Installing shellcheck ${VERSION} (${ARCH})"
+download "https://github.com/koalaman/shellcheck/releases/download/v${VERSION}/${ASSET}" "${TMP_DIR}/${ASSET}"
+verify_sha256 "${TMP_DIR}/${ASSET}" "$EXPECTED"
+
+tar -xJf "${TMP_DIR}/${ASSET}" -C "$TMP_DIR" "shellcheck-v${VERSION}/shellcheck"
+install -m 0755 "${TMP_DIR}/shellcheck-v${VERSION}/shellcheck" /usr/local/bin/shellcheck
 shellcheck --version

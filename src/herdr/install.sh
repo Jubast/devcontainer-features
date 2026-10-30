@@ -7,6 +7,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 [ "$(id -u)" -eq 0 ] || { echo "Must run as root." >&2; exit 1; }
 
+FEATURE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TMP_DIR"' EXIT
 
@@ -20,8 +21,6 @@ ensure_pkgs() {
 }
 
 download() { curl -fsSL --retry 3 -o "$2" "$1"; }
-
-gh_api() { curl -fsSL --retry 3 ${GITHUB_TOKEN:+-H "Authorization: Bearer $GITHUB_TOKEN"} "$1"; }
 
 # Newest release tag, from the redirect of a ".../releases/latest" URL (no API quota).
 latest_tag() {
@@ -55,10 +54,15 @@ verify_sha256() {
     echo "sha256 ok: $(basename "$1")"
 }
 
-# sha256 GitHub recorded for a release asset: gh_digest OWNER/REPO TAG ASSET.
-gh_digest() {
-    gh_api "https://api.github.com/repos/$1/releases/tags/$2" \
-        | jq -r --arg n "$3" '.assets[] | select(.name == $n) | .digest // empty' | sed 's/^sha256://'
+# Features without upstream checksums ship "<version> <asset> <sha256>" lines in checksums.txt.
+listed_versions() { awk '$1 !~ /^#/ && NF { print $1 }' "$FEATURE_DIR/checksums.txt" | sort -uV; }
+
+# shipped_sha256 VERSION ASSET: the shipped hash, or abort naming the listed versions.
+shipped_sha256() {
+    local h
+    h="$(awk -v v="$1" -v a="$2" '$1 == v && $2 == a { print $3; exit }' "$FEATURE_DIR/checksums.txt")"
+    [ -n "$h" ] || { echo "No checksum shipped for $2 (version $1). Listed versions: $(listed_versions | tr '\n' ' ')" >&2; exit 1; }
+    echo "$h"
 }
 # --- end common ---
 
@@ -68,16 +72,19 @@ case "$(uname -m)" in
     aarch64|arm64) ARCH=aarch64 ;;
     *) echo "Unsupported architecture: $(uname -m)" >&2; exit 1 ;;
 esac
-FEATURE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-ensure_pkgs curl ca-certificates jq
-TAG="$(resolve_tag "$VERSION" https://github.com/herdrdev/herdr/releases/latest)"
+# "latest" is the newest version listed in checksums.txt, not the newest upstream release.
+if [ "$VERSION" = latest ]; then VERSION="$(listed_versions | tail -n 1)"; fi
+VERSION="$(normalize_tag "$VERSION")"
+VERSION="${VERSION#v}"
 ASSET="herdr-linux-${ARCH}"
 
-# Upstream publishes no checksum file; use the sha256 GitHub recorded for the asset.
-echo "Installing herdr ${TAG} (${ARCH})"
-download "https://github.com/herdrdev/herdr/releases/download/${TAG}/${ASSET}" "${TMP_DIR}/${ASSET}"
-verify_sha256 "${TMP_DIR}/${ASSET}" "$(gh_digest herdrdev/herdr "$TAG" "$ASSET")"
+ensure_pkgs curl ca-certificates
+EXPECTED="$(shipped_sha256 "$VERSION" "$ASSET")"
+
+echo "Installing herdr ${VERSION} (${ARCH})"
+download "https://github.com/herdrdev/herdr/releases/download/v${VERSION}/${ASSET}" "${TMP_DIR}/${ASSET}"
+verify_sha256 "${TMP_DIR}/${ASSET}" "$EXPECTED"
 
 install -m 0755 "${TMP_DIR}/${ASSET}" /usr/local/bin/herdr
 herdr --version
