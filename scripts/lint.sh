@@ -31,6 +31,23 @@ for dir in src/*/; do
     [ -f "test/$id/scenarios.json" ] || err "$id: test/$id/scenarios.json missing"
 done
 
+echo "scenarios"
+# Every scenario needs <name>.sh beside its scenarios.json, and only declared options.
+while IFS= read -r f; do
+    dir="$(dirname "$f")"
+    while IFS= read -r name; do
+        [ -f "$dir/$name.sh" ] || err "$f: scenario '$name' has no $dir/$name.sh"
+    done < <(jq -r 'keys[]' "$f")
+    while IFS=$'\t' read -r feature option; do
+        [ -f "src/$feature/devcontainer-feature.json" ] || { err "$f: unknown feature '$feature'"; continue; }
+        jq -e --arg o "$option" '.options[$o]' "src/$feature/devcontainer-feature.json" >/dev/null \
+            || err "$f: feature '$feature' has no option '$option'"
+    done < <(jq -r '.[].features | to_entries[] | .key as $k | (.value | keys[]) | [$k, .] | @tsv' "$f")
+done < <(find test -name scenarios.json | sort)
+for dir in src/*/; do
+    grep -qw "$(basename "$dir")" .github/workflows/test.yaml || err "$(basename "$dir"): missing from the test.yaml matrix"
+done
+
 echo "executable bit"
 # Check the mode recorded in git: the filesystem can lie (core.fileMode=false).
 while read -r mode _ _ f; do
