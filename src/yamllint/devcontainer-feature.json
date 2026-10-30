@@ -1,0 +1,17 @@
+{
+  "id": "yamllint",
+  "version": "1.0.0",
+  "name": "yamllint",
+  "description": "Installs yamllint: the distro apt package for 'latest', or a pinned version from PyPI into /opt/yamllint.",
+  "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/yamllint",
+  "options": {
+    "version": {
+      "type": "string",
+      "default": "latest",
+      "proposals": [
+        "latest"
+      ],
+      "description": "'latest' (distro package) or a version to install from PyPI (e.g. 1.37.1)."
+    }
+  }
+}

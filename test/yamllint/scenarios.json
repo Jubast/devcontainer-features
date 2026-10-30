@@ -1,0 +1,10 @@
+{
+  "pinned": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "yamllint": {
+        "version": "1.37.1"
+      }
+    }
+  }
+}
