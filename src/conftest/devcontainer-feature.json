@@ -1,0 +1,17 @@
+{
+  "id": "conftest",
+  "version": "1.0.0",
+  "name": "Conftest",
+  "description": "Installs Conftest from GitHub releases, verified against the published checksums.txt.",
+  "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/conftest",
+  "options": {
+    "version": {
+      "type": "string",
+      "default": "latest",
+      "proposals": [
+        "latest"
+      ],
+      "description": "Version to install (e.g. 0.71.1), or 'latest'."
+    }
+  }
+}
