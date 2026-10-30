@@ -111,6 +111,9 @@ common() { sed -n '/^# --- common/,/^# --- end common/p' "$1" | sha256sum; }
 ref="$(common src/yq/install.sh)"
 for f in src/*/install.sh; do [ "$(common "$f")" = "$ref" ] || err "$f: common block differs from src/yq/install.sh"; done
 
+echo "fail-closed logic"
+bash scripts/test-common.sh >/dev/null || err "scripts/test-common.sh (run it for details)"
+
 echo "no curl|sh"
 ! grep -nE '(curl|wget)[^|]*\|[[:space:]]*(sudo +)?(ba|z)?sh' src/*/install.sh || err "pipe to shell"
 
