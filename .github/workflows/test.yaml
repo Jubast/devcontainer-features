@@ -1,0 +1,41 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: scripts/lint.sh
+
+  features:
+    needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        feature: [conftest, gcm, glab, herdr, kubeconform, openshift-cli, pluto, shellcheck, yamllint, yq]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install devcontainer CLI
+        run: npm install -g @devcontainers/cli@0.90.0
+      - name: Default install and scenarios
+        run: devcontainer features test -f "${{ matrix.feature }}" -i mcr.microsoft.com/devcontainers/base:ubuntu .
+
+  global:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install devcontainer CLI
+        run: npm install -g @devcontainers/cli@0.90.0
+      - name: Global scenarios
+        run: devcontainer features test --global-scenarios-only .
