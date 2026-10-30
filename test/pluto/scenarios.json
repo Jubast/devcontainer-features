@@ -1,0 +1,10 @@
+{
+  "pinned": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "pluto": {
+        "version": "5.20.0"
+      }
+    }
+  }
+}
