@@ -1,0 +1,10 @@
+{
+  "pinned": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "glab": {
+        "version": "1.60.0"
+      }
+    }
+  }
+}
