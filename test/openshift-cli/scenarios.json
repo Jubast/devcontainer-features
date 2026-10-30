@@ -1,0 +1,10 @@
+{
+  "pinned": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "openshift-cli": {
+        "version": "4.16.20"
+      }
+    }
+  }
+}
