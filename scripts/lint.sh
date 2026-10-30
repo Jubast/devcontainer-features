@@ -46,6 +46,25 @@ for f in src/*/checksums.txt; do
 done
 for id in herdr gcm shellcheck; do [ -f "src/$id/checksums.txt" ] || err "$id: checksums.txt missing"; done
 
+echo "declared dependencies"
+# Bare images (debian:12) have none of these; each installer must ensure what it uses.
+for f in src/*/install.sh; do
+    body="$(sed '/^# --- common/,/^# --- end common/d' "$f")"
+    pkgs="$(grep -h '^ *ensure_pkgs ' <<<"$body" | tr '\n' ' ')"
+    need() { # PATTERN PACKAGE
+        if grep -qE "$1" <<<"$body" && ! grep -qw -- "$2" <<<"$pkgs"; then err "$f: uses '$1' but ensure_pkgs lacks $2"; fi
+    }
+    need '\b(download|resolve_tag|latest_tag)\b' curl
+    need '\b(download|resolve_tag|latest_tag)\b' ca-certificates
+    need 'tar -x' tar
+    need 'tar -xJf' xz-utils
+    need 'git-credential-manager' git
+    need '\bjq\b' jq
+    need 'python3 -m' python3
+    need 'python3 -m' ca-certificates
+    need '\bunzip\b' unzip
+done
+
 echo "no api calls at install time"
 ! grep -n 'api\.github\.com' src/*/install.sh || err "install.sh must not call api.github.com"
 
