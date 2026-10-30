@@ -23,4 +23,4 @@ Installs [Git Credential Manager](https://github.com/git-ecosystem/git-credentia
 
 Requires `git`, which is installed from apt if missing (bare Debian images have none). Installed with `apt-get install` so dependencies are resolved. The ICU runtime (`libicuNN`, picked from apt for the distro) is installed explicitly because .NET aborts without it on Debian images. Run `git-credential-manager configure` yourself.
 
-Architectures: amd64, arm64. See the [repository README](../../README.md) for the supply-chain policy.
+Architectures: amd64, arm64. Debian and Ubuntu based images only (needs `apt-get`). See the [repository README](../../README.md) for the supply-chain policy.

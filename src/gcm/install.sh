@@ -6,6 +6,7 @@ trap 'echo "ERROR: install.sh line ${LINENO}: ${BASH_COMMAND}" >&2' ERR
 export DEBIAN_FRONTEND=noninteractive
 
 [ "$(id -u)" -eq 0 ] || { echo "Must run as root." >&2; exit 1; }
+command -v apt-get >/dev/null || { echo "Only Debian and Ubuntu based images are supported." >&2; exit 1; }
 
 FEATURE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TMP_DIR="$(mktemp -d)"
@@ -20,11 +21,14 @@ ensure_pkgs() {
     rm -rf /var/lib/apt/lists/*
 }
 
-download() { curl -fsSL --retry 3 -o "$2" "$1"; }
+# HTTPS only (also across redirects), TLS 1.2 or newer.
+CURL=(curl -fsS --proto '=https' --proto-redir '=https' --tlsv1.2 --retry 3)
+
+download() { "${CURL[@]}" -L -o "$2" "$1"; }
 
 # Newest release tag, from the redirect of a ".../releases/latest" URL (no API quota).
 latest_tag() {
-    curl -fsSI --retry 3 "$1" | tr -d '\r' | sed -n 's#^[Ll]ocation: .*/\(v[0-9][^/]*\)$#\1#p' | tail -n 1
+    "${CURL[@]}" -I "$1" | tr -d '\r' | sed -n 's#^[Ll]ocation: .*/\(v[0-9][^/]*\)$#\1#p' | tail -n 1
 }
 
 # Accepts 1.2.3 or v1.2.3 and prints v1.2.3; rejects anything else.

@@ -23,4 +23,4 @@ Installs the OpenShift CLI (`oc`) from `mirror.openshift.com`.
 
 `version` is a mirror directory: `stable`, `stable-4.16`, `4.16.20`, ... `latest` means `stable`. Only `oc` is installed (not `kubectl`; use the official kubectl feature).
 
-Architectures: amd64, arm64. See the [repository README](../../README.md) for the supply-chain policy.
+Architectures: amd64, arm64. Debian and Ubuntu based images only (needs `apt-get`). See the [repository README](../../README.md) for the supply-chain policy.

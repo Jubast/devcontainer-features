@@ -19,4 +19,4 @@ Installs [kubeconform](https://github.com/yannh/kubeconform).
 - Source: GitHub release asset `kubeconform-linux-<amd64|arm64>.tar.gz`.
 - Verified against the release's `CHECKSUMS`.
 
-Architectures: amd64, arm64. See the [repository README](../../README.md) for the supply-chain policy.
+Architectures: amd64, arm64. Debian and Ubuntu based images only (needs `apt-get`). See the [repository README](../../README.md) for the supply-chain policy.

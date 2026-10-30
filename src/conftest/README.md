@@ -19,4 +19,4 @@ Installs [Conftest](https://github.com/open-policy-agent/conftest).
 - Source: GitHub release asset `conftest_<version>_Linux_<x86_64|arm64>.tar.gz`.
 - Verified against the release's `checksums.txt`.
 
-Architectures: amd64, arm64. See the [repository README](../../README.md) for the supply-chain policy.
+Architectures: amd64, arm64. Debian and Ubuntu based images only (needs `apt-get`). See the [repository README](../../README.md) for the supply-chain policy.

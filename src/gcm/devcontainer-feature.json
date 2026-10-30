@@ -1,9 +1,15 @@
 {
   "id": "gcm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "Git Credential Manager",
-  "description": "Installs Git Credential Manager (git-credential-manager) from GitHub releases, checked against the sha256 GitHub recorded for the asset.",
+  "description": "Installs Git Credential Manager (git-credential-manager) from GitHub releases, verified against the sha256 shipped in the feature's checksums.txt.",
   "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/gcm",
+  "licenseURL": "https://github.com/Jubast/devcontainer-features/blob/main/LICENSE",
+  "keywords": [
+    "git",
+    "credentials",
+    "git-credential-manager"
+  ],
   "options": {
     "version": {
       "type": "string",
@@ -13,5 +19,8 @@
       ],
       "description": "Version to install (e.g. 3.0.2), or 'latest'."
     }
-  }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
 }

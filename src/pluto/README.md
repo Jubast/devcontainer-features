@@ -19,4 +19,4 @@ Installs [Pluto](https://github.com/FairwindsOps/pluto), the deprecated Kubernet
 - Source: GitHub release asset `pluto_<version>_linux_<amd64|arm64>.tar.gz`.
 - Verified against the release's `checksums.txt`. The published sigstore bundles are not verified.
 
-Architectures: amd64, arm64. See the [repository README](../../README.md) for the supply-chain policy.
+Architectures: amd64, arm64. Debian and Ubuntu based images only (needs `apt-get`). See the [repository README](../../README.md) for the supply-chain policy.

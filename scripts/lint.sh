@@ -18,7 +18,7 @@ shellcheck -s bash -e SC1091 "${sh_files[@]}" || err "shellcheck"
 
 echo "json"
 while IFS= read -r f; do jq -e . "$f" >/dev/null || err "invalid json: $f"; done \
-    < <(find src test .devcontainer -name '*.json' 2>/dev/null | sort)
+    < <(find src test -name '*.json' | sort)
 
 echo "features"
 for dir in src/*/; do
@@ -30,6 +30,21 @@ for dir in src/*/; do
     [ -f "test/$id/test.sh" ] || err "$id: test/$id/test.sh missing"
     [ -f "test/$id/scenarios.json" ] || err "$id: test/$id/scenarios.json missing"
 done
+
+echo "version bumps"
+# A feature whose files changed since the latest release tag needs a new version, or it is never published.
+tag="$(git describe --tags --abbrev=0 --match 'v*' 2>/dev/null || true)"
+if [ -z "$tag" ]; then
+    echo "no release tag, skipped"
+else
+    for dir in src/*/; do
+        id="$(basename "$dir")"
+        git cat-file -e "$tag:src/$id/devcontainer-feature.json" 2>/dev/null || continue
+        git diff --quiet "$tag" -- "src/$id" && continue
+        [ "$(git show "$tag:src/$id/devcontainer-feature.json" | jq -r .version)" != "$(jq -r .version "src/$id/devcontainer-feature.json")" ] \
+            || err "$id: changed since $tag but version is unchanged"
+    done
+fi
 
 echo "checksums"
 for f in src/*/checksums.txt; do
@@ -95,6 +110,9 @@ echo "common block"
 common() { sed -n '/^# --- common/,/^# --- end common/p' "$1" | sha256sum; }
 ref="$(common src/yq/install.sh)"
 for f in src/*/install.sh; do [ "$(common "$f")" = "$ref" ] || err "$f: common block differs from src/yq/install.sh"; done
+
+echo "fail-closed logic"
+bash scripts/test-common.sh >/dev/null || err "scripts/test-common.sh (run it for details)"
 
 echo "no curl|sh"
 ! grep -nE '(curl|wget)[^|]*\|[[:space:]]*(sudo +)?(ba|z)?sh' src/*/install.sh || err "pipe to shell"

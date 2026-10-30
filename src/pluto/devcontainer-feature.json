@@ -1,9 +1,15 @@
 {
   "id": "pluto",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "Pluto",
   "description": "Installs Pluto (deprecated Kubernetes API detector) from GitHub releases, verified against the published checksums.txt.",
   "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/pluto",
+  "licenseURL": "https://github.com/Jubast/devcontainer-features/blob/main/LICENSE",
+  "keywords": [
+    "kubernetes",
+    "deprecation",
+    "api"
+  ],
   "options": {
     "version": {
       "type": "string",
@@ -13,5 +19,8 @@
       ],
       "description": "Version to install (e.g. 5.24.4), or 'latest'."
     }
-  }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
 }
