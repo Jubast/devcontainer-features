@@ -79,7 +79,8 @@ VERSION="$(normalize_tag "$VERSION")"
 VERSION="${VERSION#v}"
 ASSET="gcm-linux-${ARCH}-${VERSION}.deb"
 
-ensure_pkgs curl ca-certificates
+# git-credential-manager needs git on the PATH, even for --version.
+ensure_pkgs curl ca-certificates git
 EXPECTED="$(shipped_sha256 "$VERSION" "$ASSET")"
 
 echo "Installing git-credential-manager ${VERSION} (${ARCH})"
