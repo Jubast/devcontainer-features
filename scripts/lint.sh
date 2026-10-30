@@ -26,10 +26,16 @@ for dir in src/*/; do
     [ "$(jq -r .id "$dir/devcontainer-feature.json")" = "$id" ] || err "$id: id does not match directory"
     jq -e '.options.version.default == "latest" or .options.version.default == "stable"' "$dir/devcontainer-feature.json" >/dev/null \
         || err "$id: missing version option"
-    [ -x "$dir/install.sh" ] || err "$id: install.sh missing or not executable"
-    [ -x "test/$id/test.sh" ] || err "$id: test/$id/test.sh missing or not executable"
+    [ -f "$dir/install.sh" ] || err "$id: install.sh missing"
+    [ -f "test/$id/test.sh" ] || err "$id: test/$id/test.sh missing"
     [ -f "test/$id/scenarios.json" ] || err "$id: test/$id/scenarios.json missing"
 done
+
+echo "executable bit"
+# Check the mode recorded in git: the filesystem can lie (core.fileMode=false).
+while read -r mode _ _ f; do
+    [ "$mode" = 100755 ] || err "$f: git mode is $mode, expected 100755 (git update-index --chmod=+x)"
+done < <(git ls-files -s -- '*.sh')
 
 echo "common block"
 common() { sed -n '/^# --- common/,/^# --- end common/p' "$1" | sha256sum; }
