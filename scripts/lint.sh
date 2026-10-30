@@ -101,6 +101,7 @@ for f in src/*/install.sh; do [ "$(common "$f")" = "$ref" ] || err "$f: common b
 
 echo "fail-closed logic"
 bash scripts/test-common.sh >/dev/null || err "scripts/test-common.sh (run it for details)"
+bash scripts/test-versions.sh >/dev/null || err "scripts/test-versions.sh (run it for details)"
 
 echo "no curl|sh"
 ! grep -nE '(curl|wget)[^|]*\|[[:space:]]*(sudo +)?(ba|z)?sh' src/*/install.sh || err "pipe to shell"
