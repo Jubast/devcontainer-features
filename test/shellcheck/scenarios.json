@@ -1,0 +1,10 @@
+{
+  "pinned": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "shellcheck": {
+        "version": "0.11.0"
+      }
+    }
+  }
+}

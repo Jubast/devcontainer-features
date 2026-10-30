@@ -1,0 +1,17 @@
+{
+  "id": "shellcheck",
+  "version": "1.0.0",
+  "name": "ShellCheck",
+  "description": "Installs ShellCheck: the distro apt package for 'latest', or a pinned GitHub release checked against the sha256 GitHub recorded for the asset.",
+  "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/shellcheck",
+  "options": {
+    "version": {
+      "type": "string",
+      "default": "latest",
+      "proposals": [
+        "latest"
+      ],
+      "description": "'latest' (distro package) or a version to install from GitHub releases (e.g. 0.11.0)."
+    }
+  }
+}
