@@ -88,13 +88,3 @@ verify_sha256 "${TMP_DIR}/${ASSET}" "$EXPECTED"
 
 install -m 0755 "${TMP_DIR}/${ASSET}" /usr/local/bin/herdr
 herdr --version
-
-# Preconfigure herdr for the container user, without overwriting an existing config.
-if [ -n "${_REMOTE_USER:-}" ] && [ "${_REMOTE_USER}" != root ] && [ -n "${_REMOTE_USER_HOME:-}" ]; then
-    CONFIG_DIR="${_REMOTE_USER_HOME}/.config/herdr"
-    if [ ! -e "${CONFIG_DIR}/config.toml" ]; then
-        mkdir -p "$CONFIG_DIR"
-        cp "${FEATURE_DIR}/config.toml" "${CONFIG_DIR}/config.toml"
-        chown -R "${_REMOTE_USER}:" "${_REMOTE_USER_HOME}/.config/herdr"
-    fi
-fi

@@ -19,8 +19,4 @@ Installs the [herdr](https://github.com/herdrdev/herdr) CLI.
 - Source: GitHub release asset `herdr-linux-<x86_64|aarch64>`.
 - **No upstream checksum file.** The sha256 of each supported release is committed in [`checksums.txt`](checksums.txt) (computed from the downloaded asset and cross-checked against GitHub's recorded digest). The install fails for a version that is not listed. Add one with `scripts/update-checksums.sh herdr <version>` in a reviewed PR.
 
-## Notes
-
-If `_REMOTE_USER` is a non-root user, a default `~/.config/herdr/config.toml` is copied in unless one exists. The herdr-reviewr plugin is not installed.
-
 Architectures: amd64, arm64. See the [repository README](../../README.md) for the supply-chain policy.
