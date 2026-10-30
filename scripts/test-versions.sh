@@ -8,7 +8,9 @@ tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 
 repo="$tmp/repo"
-cp -r . "$repo"
+# Committed history, with the working tree (possibly uncommitted changes) laid over it.
+git clone -q --no-hardlinks . "$repo"
+find . -path ./.git -prune -o -type f -print0 | tar --null -T - -cf - | tar -xf - -C "$repo"
 g() { git -C "$repo" -c user.name=test -c user.email=test@example.com "$@"; }
 g tag -l | xargs -r git -C "$repo" tag -d >/dev/null
 g add -A
