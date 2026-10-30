@@ -16,7 +16,7 @@ Installs the OpenShift CLI (`oc`) from `mirror.openshift.com`.
 
 ## Source and integrity
 
-- Source: `openshift-client-linux[-arm64].tar.gz` in the mirror directory for the version.
+- Source: `openshift-client-linux[-arm64].tar.gz` in a channel directory (`stable`, `stable-4.16`), `openshift-client-linux[-arm64]-<version>.tar.gz` in an exact-version directory (`4.16.20`).
 - Verified against the `sha256sum.txt` in the same mirror directory. The mirror's GPG signature is not checked.
 
 ## Notes

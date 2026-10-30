@@ -62,18 +62,26 @@ gh_digest() {
 
 VERSION="${VERSION:-latest}"
 # Mirror directory: "stable", "stable-4.16", "4.16.20", ... ("latest" means "stable").
-[ "$VERSION" = latest ] && VERSION=stable
+if [ "$VERSION" = latest ]; then VERSION=stable; fi
 [[ "$VERSION" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]] || { echo "Invalid version: ${VERSION}" >&2; exit 1; }
 case "$(uname -m)" in
-    x86_64|amd64) ASSET="openshift-client-linux.tar.gz" ;;
-    aarch64|arm64) ASSET="openshift-client-linux-arm64.tar.gz" ;;
+    x86_64|amd64) ARCH_PART="" ;;
+    aarch64|arm64) ARCH_PART="-arm64" ;;
     *) echo "Unsupported architecture: $(uname -m)" >&2; exit 1 ;;
 esac
+
+# Channel directories (stable, stable-4.16) list "openshift-client-linux.tar.gz";
+# exact-version directories (4.16.20) only list "openshift-client-linux-4.16.20.tar.gz".
+if [[ "$VERSION" =~ ^[0-9] ]]; then
+    ASSET="openshift-client-linux${ARCH_PART}-${VERSION}.tar.gz"
+else
+    ASSET="openshift-client-linux${ARCH_PART}.tar.gz"
+fi
 
 ensure_pkgs curl ca-certificates tar
 BASE="https://mirror.openshift.com/pub/openshift-v4/clients/ocp/${VERSION}"
 
-echo "Installing oc from ${BASE}"
+echo "Installing oc from ${BASE}/${ASSET}"
 download "${BASE}/${ASSET}" "${TMP_DIR}/${ASSET}"
 download "${BASE}/sha256sum.txt" "${TMP_DIR}/sha256sum.txt"
 verify_sha256 "${TMP_DIR}/${ASSET}" "$(checksum_of "${TMP_DIR}/sha256sum.txt" "$ASSET")"
