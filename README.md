@@ -4,7 +4,7 @@ Dev container features for tools that Microsoft's official [`devcontainers/featu
 
 ## Policy
 
-Consume only Microsoft's official features (`ghcr.io/devcontainers/features/*`). Everything else is implemented here, so no third-party feature repository can inject code into our images. Every install script is short, readable and verifies what it downloads.
+This repository consumes no third-party features: it depends only on Microsoft's official [`devcontainers/features`](https://github.com/devcontainers/features) tooling, and every installer is implemented here and verifies what it downloads where upstream makes that possible (see [Supply chain](#supply-chain)).
 
 ## Features
 
@@ -42,35 +42,6 @@ Not here, use the official features: kubectl/helm, python, node, dotnet, github-
 - **No `curl | bash`.** Scripts are downloaded to a temp dir, verified, then installed; the `version` input is validated before it reaches a URL.
 - **CI.** Workflows use only `actions/*` and `devcontainers/*`, pinned to full commit SHAs, with `contents: read`; `packages: write` only on the release job. The devcontainer CLI is pinned to an exact version. `scripts/lint.sh` enforces the workflow rules.
 - **Shipped checksums.** For herdr, gcm and pinned shellcheck, `src/<id>/checksums.txt` lists `<version> <asset> <sha256>`. `latest` there means the newest *listed* version, a deliberate choice: updating is a reviewed PR that runs `scripts/update-checksums.sh <id> <version>` (hashes the downloaded assets, cross-checks GitHub's recorded digest; maintainers only, may use `GITHUB_TOKEN`). No install script calls the GitHub API.
-
-## Migrating the workspace devcontainer
-
-After publishing, official features stay and the rest becomes:
-
-```jsonc
-"features": {
-    "ghcr.io/jubast/devcontainer-features/herdr:1": {},
-    "ghcr.io/jubast/devcontainer-features/gcm:1": {},
-    "ghcr.io/jubast/devcontainer-features/glab:1": {},
-    "ghcr.io/jubast/devcontainer-features/openshift-cli:1": {},
-    "ghcr.io/jubast/devcontainer-features/kubeconform:1": {},
-    "ghcr.io/jubast/devcontainer-features/pluto:1": {},
-    "ghcr.io/jubast/devcontainer-features/yq:1": {},
-    "ghcr.io/jubast/devcontainer-features/conftest:1": {},
-    "ghcr.io/jubast/devcontainer-features/shellcheck:1": {},
-    "ghcr.io/jubast/devcontainer-features/yamllint:1": {},
-    "ghcr.io/devcontainers/features/common-utils:2": { "installZsh": false, "installOhMyZsh": false, "upgradePackages": true },
-    "ghcr.io/devcontainers/features/python:1": {},
-    "ghcr.io/devcontainers/features/node:2": {},
-    "ghcr.io/devcontainers/features/dotnet:2": { "version": "10.0" },
-    "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": { "minikube": "none" },
-    "ghcr.io/devcontainers/features/azure-cli:1": { "extensions": "azure-devops" },
-    "ghcr.io/devcontainers/features/copilot-cli:1": {}
-}
-```
-
-Remove the `./features/*` directory and these third-party entries: `eitsupi/devcontainer-features/jq-likes`, `dhoeric/features/conftest`, `devcontainers-extra/features/shellcheck`, `devcontainers-extra/features/yamllint`. `claude-code` (`ghcr.io/anthropics/devcontainer-features`) has no replacement here yet. The old `jq-likes` also installed `jq`; `common-utils` provides it. herdr no longer installs the herdr-reviewr plugin.
 
 ## Development
 
