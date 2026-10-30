@@ -32,19 +32,7 @@ for dir in src/*/; do
 done
 
 echo "version bumps"
-# A feature whose files changed since the latest release tag needs a new version, or it is never published.
-tag="$(git describe --tags --abbrev=0 --match 'v*' 2>/dev/null || true)"
-if [ -z "$tag" ]; then
-    echo "no release tag, skipped"
-else
-    for dir in src/*/; do
-        id="$(basename "$dir")"
-        git cat-file -e "$tag:src/$id/devcontainer-feature.json" 2>/dev/null || continue
-        git diff --quiet "$tag" -- "src/$id" && continue
-        [ "$(git show "$tag:src/$id/devcontainer-feature.json" | jq -r .version)" != "$(jq -r .version "src/$id/devcontainer-feature.json")" ] \
-            || err "$id: changed since $tag but version is unchanged"
-    done
-fi
+bash scripts/check-versions.sh || err "version bumps"
 
 echo "checksums"
 for f in src/*/checksums.txt; do
