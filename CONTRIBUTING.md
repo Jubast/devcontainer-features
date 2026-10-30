@@ -2,10 +2,12 @@
 
 ## Checks
 
+Prerequisites: `bash`, `shellcheck`, `jq`, and `git` with full history and tags (`git fetch --tags`; a shallow clone skips the version check with a warning). Feature tests also need docker and the [devcontainer CLI](https://github.com/devcontainers/cli).
+
 ```sh
-scripts/lint.sh                                                                  # offline: syntax, shellcheck, JSON, layout, checksums, workflows
-devcontainer features test -f <id> -i mcr.microsoft.com/devcontainers/base:ubuntu .  # needs docker
-devcontainer features test --global-scenarios-only .
+scripts/lint.sh                                                                      # offline: syntax, shellcheck, JSON, layout, checksums, versions, fail-closed tests, workflows
+devcontainer features test -f <id> -i mcr.microsoft.com/devcontainers/base:ubuntu .  # one feature: default install, pinned scenario
+devcontainer features test --global-scenarios-only .                                 # all features together
 ```
 
 Run `scripts/lint.sh` before every commit; CI runs it first.
@@ -19,8 +21,17 @@ Run `scripts/lint.sh` before every commit; CI runs it first.
 
 ## Change a feature
 
-Bump its `version` in `devcontainer-feature.json`; lint fails otherwise. See [Release](README.md#release).
+Bump its `version` in `devcontainer-feature.json`; lint fails if it is unchanged or lower. README-only edits need no bump. See [Release](README.md#release).
 
 ## Commits
 
 Conventional commits (`feat:`, `fix:`, `docs:`, ...), short subjects, branches named `feature/...`, `bugfix/...` or `hotfix/...`.
+
+## Maintainer settings
+
+Settings on GitHub that the code cannot enforce:
+
+- [ ] Enable private vulnerability reporting (Settings, Code security), which [SECURITY.md](SECURITY.md) points reporters to.
+- [ ] Protect `main`: require pull requests and the `test` workflow to pass.
+- [ ] Add a tag ruleset for `v*` so only maintainers can create release tags (see [Release gate](SECURITY.md#release-gate)).
+- [ ] Optional: put the `publish` job behind an environment with required reviewers.
