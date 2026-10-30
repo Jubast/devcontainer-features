@@ -8,7 +8,9 @@ Dev container features published to `ghcr.io/jubast/devcontainer-features/<id>`.
 
 - `src/<id>/`: `devcontainer-feature.json`, `install.sh`, `README.md`.
 - `test/<id>/`: `test.sh`, `pinned.sh`, `scenarios.json`; `test/_global/` for combined scenarios.
-- `scripts/lint.sh`: offline checks (syntax, shellcheck, JSON, layout, workflow pinning). Run before every commit.
+- `scripts/lint.sh`: offline checks (syntax, shellcheck, JSON, layout, checksums, version bumps, fail-closed tests, workflow pinning). Run before every commit.
+- `scripts/update-checksums.sh`: adds a release to a feature's `checksums.txt`.
+- A changed feature needs a new `version` in its `devcontainer-feature.json` (lint enforces it against the latest `v*` tag).
 
 ## Rules for install.sh
 
