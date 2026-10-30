@@ -86,8 +86,17 @@ echo "Installing git-credential-manager ${VERSION} (${ARCH})"
 download "https://github.com/git-ecosystem/git-credential-manager/releases/download/v${VERSION}/${ASSET}" "${TMP_DIR}/${ASSET}"
 verify_sha256 "${TMP_DIR}/${ASSET}" "$EXPECTED"
 
-# apt resolves the package's dependencies (e.g. libicu), which dpkg -i does not.
+# .NET aborts without the ICU runtime (libicuNN, NN depends on the distro), which
+# Debian base images do not ship. Pick the newest installable one from apt.
 apt-get update -y
-apt-get install -y --no-install-recommends "${TMP_DIR}/${ASSET}"
+ICU_PKG=""
+while read -r pkg; do
+    cand="$(apt-cache policy "$pkg" | awk '/Candidate:/ { print $2 }')"
+    if [ -n "$cand" ] && [ "$cand" != "(none)" ]; then ICU_PKG="$pkg"; break; fi
+done < <(apt-cache search --names-only '^libicu[0-9]+$' | awk '{ print $1 }' | sort -rV)
+[ -n "$ICU_PKG" ] || { echo "No libicu package available from apt." >&2; exit 1; }
+
+# apt also resolves the package's other dependencies, which dpkg -i does not.
+apt-get install -y --no-install-recommends "$ICU_PKG" "${TMP_DIR}/${ASSET}"
 rm -rf /var/lib/apt/lists/*
 git-credential-manager --version
