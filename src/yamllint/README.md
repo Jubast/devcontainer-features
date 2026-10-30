@@ -17,10 +17,10 @@ Installs [yamllint](https://github.com/adrienverge/yamllint).
 ## Source and integrity
 
 - Source: `latest`: the distro `yamllint` apt package. Pinned: `pip install yamllint==<version>` into `/opt/yamllint`.
-- `latest` is the distro package, so apt's signed archive covers it (and it can be older than upstream). A pinned version is installed from PyPI over TLS with **no checksum verification** (upstream publishes none).
+- `latest` is the distro package, so apt's signed archive covers it (and it can be older than upstream). A pinned version is installed from PyPI over TLS with **no checksum or hash verification**, and its dependencies (PyYAML, pathspec) are not pinned. Use `latest` if that matters.
 
 ## Notes
 
 A pinned install adds `ca-certificates`, `python3` and `python3-venv` if missing and symlinks `/usr/local/bin/yamllint`.
 
-Architectures: amd64, arm64. See the [repository README](../../README.md) for the supply-chain policy.
+Architectures: amd64, arm64. Debian and Ubuntu based images only (needs `apt-get`). See the [repository README](../../README.md) for the supply-chain policy.

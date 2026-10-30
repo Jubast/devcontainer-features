@@ -23,4 +23,4 @@ Installs [ShellCheck](https://github.com/koalaman/shellcheck).
 
 Pin a version if you need newer than the distro package.
 
-Architectures: amd64, arm64. See the [repository README](../../README.md) for the supply-chain policy.
+Architectures: amd64, arm64. Debian and Ubuntu based images only (needs `apt-get`). See the [repository README](../../README.md) for the supply-chain policy.

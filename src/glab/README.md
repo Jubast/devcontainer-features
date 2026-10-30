@@ -19,4 +19,4 @@ Installs the [GitLab CLI](https://gitlab.com/gitlab-org/cli) (`glab`).
 - Source: GitLab release asset `glab_<version>_linux_<amd64|arm64>.tar.gz`.
 - Verified against the release's `checksums.txt`.
 
-Architectures: amd64, arm64. See the [repository README](../../README.md) for the supply-chain policy.
+Architectures: amd64, arm64. Debian and Ubuntu based images only (needs `apt-get`). See the [repository README](../../README.md) for the supply-chain policy.

@@ -19,4 +19,4 @@ Installs [mikefarah/yq](https://github.com/mikefarah/yq) v4.
 - Source: GitHub release asset `yq_linux_<amd64|arm64>`.
 - Verified against the SHA-256 column of the release's `checksums` (column located via `checksums_hashes_order`).
 
-Architectures: amd64, arm64. See the [repository README](../../README.md) for the supply-chain policy.
+Architectures: amd64, arm64. Debian and Ubuntu based images only (needs `apt-get`). See the [repository README](../../README.md) for the supply-chain policy.
