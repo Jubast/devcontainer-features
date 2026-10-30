@@ -75,9 +75,9 @@ if [ "$VERSION" = latest ]; then
     exit 0
 fi
 
-# Pinned version: PyPI into an isolated venv (no upstream checksum to verify).
+# Pinned version: PyPI into an isolated venv (no upstream checksum to verify); pip needs CA certificates.
 [[ "$VERSION" =~ ^[0-9]+(\.[0-9]+){1,2}$ ]] || { echo "Invalid version: ${VERSION}" >&2; exit 1; }
-ensure_pkgs python3 python3-venv
+ensure_pkgs ca-certificates python3 python3-venv
 python3 -m venv /opt/yamllint
 /opt/yamllint/bin/pip install --no-cache-dir "yamllint==${VERSION}"
 ln -sf /opt/yamllint/bin/yamllint /usr/local/bin/yamllint

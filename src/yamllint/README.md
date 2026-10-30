@@ -21,6 +21,6 @@ Installs [yamllint](https://github.com/adrienverge/yamllint).
 
 ## Notes
 
-A pinned install adds `python3` and `python3-venv` if missing and symlinks `/usr/local/bin/yamllint`.
+A pinned install adds `ca-certificates`, `python3` and `python3-venv` if missing and symlinks `/usr/local/bin/yamllint`.
 
 Architectures: amd64, arm64. See the [repository README](../../README.md) for the supply-chain policy.
