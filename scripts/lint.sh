@@ -31,6 +31,24 @@ for dir in src/*/; do
     [ -f "test/$id/scenarios.json" ] || err "$id: test/$id/scenarios.json missing"
 done
 
+echo "checksums"
+for f in src/*/checksums.txt; do
+    id="$(basename "$(dirname "$f")")"
+    bad="$(grep -vE '^(#.*|[0-9]+(\.[0-9]+){1,2} [^ ]+ [0-9a-f]{64})$' "$f" | grep -v '^$' || true)"
+    [ -z "$bad" ] || err "$f: malformed line(s): $bad"
+    [ -z "$(awk '$1 !~ /^#/ && NF { print $1, $2 }' "$f" | sort | uniq -d)" ] || err "$f: duplicate version/asset"
+    [ -n "$(awk '$1 !~ /^#/ && NF' "$f")" ] || err "$f: no entries"
+    # every listed version needs an amd64 and an arm64 asset
+    while read -r v; do
+        [ "$(awk -v v="$v" '$1 == v' "$f" | wc -l)" -ge 2 ] || err "$f: $v lacks an asset per architecture"
+    done < <(awk '$1 !~ /^#/ && NF { print $1 }' "$f" | sort -u)
+    grep -q checksums.txt "src/$id/README.md" || err "$id: README does not mention checksums.txt"
+done
+for id in herdr gcm shellcheck; do [ -f "src/$id/checksums.txt" ] || err "$id: checksums.txt missing"; done
+
+echo "no api calls at install time"
+! grep -n 'api\.github\.com' src/*/install.sh || err "install.sh must not call api.github.com"
+
 echo "scenarios"
 # Every scenario needs <name>.sh beside its scenarios.json, and only declared options.
 while IFS= read -r f; do
