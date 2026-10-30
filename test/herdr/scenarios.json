@@ -1,0 +1,10 @@
+{
+  "pinned": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "herdr": {
+        "version": "0.9.4"
+      }
+    }
+  }
+}
