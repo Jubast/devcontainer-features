@@ -4,6 +4,13 @@
   "name": "Conftest",
   "description": "Installs Conftest from GitHub releases, verified against the published checksums.txt.",
   "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/conftest",
+  "licenseURL": "https://github.com/Jubast/devcontainer-features/blob/main/LICENSE",
+  "keywords": [
+    "policy",
+    "opa",
+    "rego",
+    "testing"
+  ],
   "options": {
     "version": {
       "type": "string",
@@ -13,5 +20,8 @@
       ],
       "description": "Version to install (e.g. 0.71.1), or 'latest'."
     }
-  }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
 }

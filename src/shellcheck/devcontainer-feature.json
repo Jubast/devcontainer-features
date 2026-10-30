@@ -2,8 +2,14 @@
   "id": "shellcheck",
   "version": "1.0.0",
   "name": "ShellCheck",
-  "description": "Installs ShellCheck: the distro apt package for 'latest', or a pinned GitHub release checked against the sha256 GitHub recorded for the asset.",
+  "description": "Installs ShellCheck: the distro apt package for 'latest', or a pinned GitHub release verified against the sha256 shipped in the feature's checksums.txt.",
   "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/shellcheck",
+  "licenseURL": "https://github.com/Jubast/devcontainer-features/blob/main/LICENSE",
+  "keywords": [
+    "shell",
+    "bash",
+    "lint"
+  ],
   "options": {
     "version": {
       "type": "string",
@@ -13,5 +19,8 @@
       ],
       "description": "'latest' (distro package) or a version to install from GitHub releases (e.g. 0.11.0)."
     }
-  }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
 }

@@ -4,6 +4,12 @@
   "name": "kubeconform",
   "description": "Installs kubeconform from GitHub releases, verified against the published CHECKSUMS.",
   "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/kubeconform",
+  "licenseURL": "https://github.com/Jubast/devcontainer-features/blob/main/LICENSE",
+  "keywords": [
+    "kubernetes",
+    "validation",
+    "manifests"
+  ],
   "options": {
     "version": {
       "type": "string",
@@ -13,5 +19,8 @@
       ],
       "description": "Version to install (e.g. 0.8.0), or 'latest'."
     }
-  }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
 }

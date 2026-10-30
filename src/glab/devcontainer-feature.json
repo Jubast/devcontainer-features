@@ -4,6 +4,12 @@
   "name": "GitLab CLI",
   "description": "Installs the GitLab CLI (glab) from GitLab releases, verified against the published checksums.txt.",
   "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/glab",
+  "licenseURL": "https://github.com/Jubast/devcontainer-features/blob/main/LICENSE",
+  "keywords": [
+    "gitlab",
+    "cli",
+    "glab"
+  ],
   "options": {
     "version": {
       "type": "string",
@@ -13,5 +19,8 @@
       ],
       "description": "Version to install (e.g. 1.126.0), or 'latest'."
     }
-  }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
 }

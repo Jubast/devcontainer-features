@@ -4,6 +4,13 @@
   "name": "OpenShift CLI",
   "description": "Installs the OpenShift CLI (oc) from mirror.openshift.com, verified against the mirror's sha256sum.txt.",
   "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/openshift-cli",
+  "licenseURL": "https://github.com/Jubast/devcontainer-features/blob/main/LICENSE",
+  "keywords": [
+    "openshift",
+    "oc",
+    "kubernetes",
+    "cli"
+  ],
   "options": {
     "version": {
       "type": "string",
@@ -15,5 +22,8 @@
       ],
       "description": "Mirror channel or version directory (e.g. stable-4.16, 4.16.20). 'latest' means 'stable'."
     }
-  }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
 }
