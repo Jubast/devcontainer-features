@@ -2,31 +2,47 @@
   "all": {
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
     "features": {
-      "herdr": {},
+      "conftest": {},
       "gcm": {},
       "glab": {},
-      "openshift-cli": {},
+      "herdr": {},
       "kubeconform": {},
+      "openshift-cli": {},
       "pluto": {},
-      "yq": {},
-      "conftest": {},
       "shellcheck": {},
-      "yamllint": {}
+      "yamllint": {},
+      "yq": {}
     }
   },
   "all-debian": {
     "image": "debian:12",
     "features": {
-      "herdr": {},
+      "conftest": {},
       "gcm": {},
       "glab": {},
-      "openshift-cli": {},
+      "herdr": {},
       "kubeconform": {},
+      "openshift-cli": {},
       "pluto": {},
-      "yq": {},
-      "conftest": {},
       "shellcheck": {},
-      "yamllint": {}
+      "yamllint": {},
+      "yq": {}
+    }
+  },
+  "all-nonroot": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "remoteUser": "vscode",
+    "features": {
+      "conftest": {},
+      "gcm": {},
+      "glab": {},
+      "herdr": {},
+      "kubeconform": {},
+      "openshift-cli": {},
+      "pluto": {},
+      "shellcheck": {},
+      "yamllint": {},
+      "yq": {}
     }
   }
 }

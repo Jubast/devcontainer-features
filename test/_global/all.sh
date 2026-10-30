@@ -3,15 +3,16 @@ set -e
 
 source dev-container-features-test-lib
 
-check "herdr" command -v herdr
-check "git-credential-manager" command -v git-credential-manager
-check "glab" command -v glab
-check "oc" command -v oc
-check "kubeconform" command -v kubeconform
-check "pluto" command -v pluto
-check "yq" command -v yq
-check "conftest" command -v conftest
-check "shellcheck" command -v shellcheck
-check "yamllint" command -v yamllint
+check "herdr on PATH" command -v herdr
+check "git-credential-manager on PATH" command -v git-credential-manager
+check "glab on PATH" command -v glab
+check "oc on PATH" command -v oc
+check "kubeconform on PATH" command -v kubeconform
+check "pluto on PATH" command -v pluto
+check "yq on PATH" command -v yq
+check "conftest on PATH" command -v conftest
+check "shellcheck on PATH" command -v shellcheck
+check "yamllint on PATH" command -v yamllint
+check "tools coexist" bash -c "yq --version && shellcheck --version && yamllint --version && conftest --version"
 
 reportResults
