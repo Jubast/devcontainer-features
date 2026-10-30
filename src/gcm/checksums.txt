@@ -1,0 +1,6 @@
+# git-credential-manager release assets: <version> <asset> <sha256>
+# Maintained with scripts/update-checksums.sh; "latest" installs the newest version listed here.
+3.0.1 gcm-linux-x64-3.0.1.deb 530d7e2a99ddd048b62e71ed4e18e8692287bdb60df2eaace3cd439010b8f624
+3.0.1 gcm-linux-arm64-3.0.1.deb a915b3bb648e4e978aa9e198e8bbeb50df229bcdba3007193651dec237165291
+3.0.2 gcm-linux-x64-3.0.2.deb 5e8d0d368c1fd5ff57bc33ffe4440e79638427490ef4691fea6bb08c07ed03ef
+3.0.2 gcm-linux-arm64-3.0.2.deb ff118acac8550758c557be31730086e6eb356c91831daea0fd1d0af4aa75c8b1

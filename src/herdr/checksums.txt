@@ -1,0 +1,6 @@
+# herdr release assets: <version> <asset> <sha256>
+# Maintained with scripts/update-checksums.sh; "latest" installs the newest version listed here.
+0.9.4 herdr-linux-x86_64 493304fbefb0ed0ea0455f373b47f48d24e8774bc7974f4c916ad2e937675b23
+0.9.4 herdr-linux-aarch64 9511cb70982c1ef115f232058e7ed7cf9640aa5a2c0ca78934cefda3aeb093fd
+0.9.5 herdr-linux-x86_64 14d9e8bc8b4a9e0118d77c32266f76d461f09b40342eb23752960bd89f59929d
+0.9.5 herdr-linux-aarch64 17d7536f2da50859523680ef279dffcac8e4a235f4e46fe8da6c2ec44141897c
