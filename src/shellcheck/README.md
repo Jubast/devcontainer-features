@@ -17,7 +17,7 @@ Installs [ShellCheck](https://github.com/koalaman/shellcheck).
 ## Source and integrity
 
 - Source: `latest`: the distro `shellcheck` apt package. Pinned: GitHub release asset `shellcheck-v<version>.linux.<x86_64|aarch64>.tar.xz`.
-- `latest` is the distro package, so apt's signed archive covers it (and it can be older than upstream). A pinned version has **no upstream checksum file**: the tarball is checked against the sha256 GitHub records for it (`digest` in the releases API). This catches corruption and later asset swaps, not a compromised publisher.
+- `latest` is the distro package, so apt's signed archive covers it (and it can be older than upstream). A pinned version has **no upstream checksum file**: only versions listed in [`checksums.txt`](checksums.txt) can be installed, with the sha256 committed there (computed from the downloaded asset and cross-checked against GitHub's recorded digest). Add one with `scripts/update-checksums.sh shellcheck <version>` in a reviewed PR.
 
 ## Notes
 

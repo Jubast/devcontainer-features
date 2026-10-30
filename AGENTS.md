@@ -13,7 +13,7 @@ Dev container features published to `ghcr.io/jubast/devcontainer-features/<id>`.
 ## Rules for install.sh
 
 - Keep the `# --- common ---` block byte-identical across features (lint enforces it); edit it in one file, copy to all.
-- Verify every download's sha256 and fail on mismatch. Never `curl | sh`. If upstream publishes no checksum, say so in the feature README.
+- Verify every download's sha256 and fail on mismatch. Never `curl | sh`. If upstream publishes no checksum, ship `src/<id>/checksums.txt` (via `scripts/update-checksums.sh`) and say so in the feature README. No GitHub API calls at install time.
 - Support amd64 and arm64, run as root, be idempotent, leave no apt lists behind.
 - Validate `version` before using it in a URL.
 - Workflows: only `actions/*` and `devcontainers/*`, pinned to a full commit SHA with a version comment; least-privilege `permissions`.

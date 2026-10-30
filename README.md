@@ -13,13 +13,13 @@ Published as `ghcr.io/jubast/devcontainer-features/<id>:1`. All take a `version`
 | Id | Installs | Integrity check |
 | --- | --- | --- |
 | [`conftest`](src/conftest) | Conftest | upstream `checksums.txt` |
-| [`gcm`](src/gcm) | Git Credential Manager | GitHub asset digest (no upstream checksums) |
+| [`gcm`](src/gcm) | Git Credential Manager | committed `checksums.txt` (no upstream checksums) |
 | [`glab`](src/glab) | GitLab CLI | upstream `checksums.txt` |
-| [`herdr`](src/herdr) | herdr | GitHub asset digest (no upstream checksums) |
+| [`herdr`](src/herdr) | herdr | committed `checksums.txt` (no upstream checksums) |
 | [`kubeconform`](src/kubeconform) | kubeconform | upstream `CHECKSUMS` |
 | [`openshift-cli`](src/openshift-cli) | `oc` from mirror.openshift.com | mirror `sha256sum.txt` |
 | [`pluto`](src/pluto) | Pluto | upstream `checksums.txt` |
-| [`shellcheck`](src/shellcheck) | ShellCheck | `latest`: apt (signed); pinned: GitHub asset digest |
+| [`shellcheck`](src/shellcheck) | ShellCheck | `latest`: apt (signed); pinned: committed `checksums.txt` |
 | [`yamllint`](src/yamllint) | yamllint | `latest`: apt (signed); pinned: PyPI over TLS only |
 | [`yq`](src/yq) | mikefarah/yq v4 | upstream `checksums` (SHA-256 column) |
 
@@ -36,12 +36,12 @@ Not here, use the official features: kubectl/helm, python, node, dotnet, github-
 
 ## Supply chain
 
-- **Checksums.** Each install downloads the upstream checksum file next to the artifact, compares sha256 and aborts on mismatch or a missing entry. Where upstream publishes none (herdr, gcm, pinned shellcheck) the sha256 GitHub records for the release asset is used instead; yamllint pinned to a version has no check beyond TLS. Each feature README states which applies.
+- **Checksums.** Each install downloads the upstream checksum file next to the artifact, compares sha256 and aborts on mismatch or a missing entry. Where upstream publishes none (herdr, gcm, pinned shellcheck) the sha256 values are committed in the feature's `checksums.txt` and only listed versions can be installed; yamllint pinned to a version has no check beyond TLS. Each feature README states which applies.
 - **Limits.** The checksum file comes from the same release as the artifact, so this catches corruption and swapped assets, not a compromised upstream release. Pin versions and review upgrades to limit that exposure. Signatures (sigstore, GPG) are not verified.
-- **Pinning.** Set `version` to an exact release (`"version": "0.71.1"`; `oc`: a mirror directory such as `4.16.20`). `latest` resolves at build time; `shellcheck` and `yamllint` `latest` mean the distro apt package.
+- **Pinning.** Set `version` to an exact release (`"version": "0.71.1"`; `oc`: a mirror directory such as `4.16.20`). `latest` resolves at build time for features with upstream checksums (newest release), and to the newest listed version for herdr and gcm; `shellcheck` and `yamllint` `latest` mean the distro apt package.
 - **No `curl | bash`.** Scripts are downloaded to a temp dir, verified, then installed; the `version` input is validated before it reaches a URL.
 - **CI.** Workflows use only `actions/*` and `devcontainers/*`, pinned to full commit SHAs, with `contents: read`; `packages: write` only on the release job. The devcontainer CLI is pinned to an exact version. `scripts/lint.sh` enforces the workflow rules.
-- **GitHub API.** Latest tags come from the `releases/latest` redirect; digests (herdr, gcm, pinned shellcheck) use the unauthenticated API, limited to 60 requests/hour per IP. Hitting the limit fails the install; verification is never skipped. The installers send `GITHUB_TOKEN` if it is set in the image environment during the build.
+- **Shipped checksums.** For herdr, gcm and pinned shellcheck, `src/<id>/checksums.txt` lists `<version> <asset> <sha256>`. `latest` there means the newest *listed* version, a deliberate choice: updating is a reviewed PR that runs `scripts/update-checksums.sh <id> <version>` (hashes the downloaded assets, cross-checks GitHub's recorded digest; maintainers only, may use `GITHUB_TOKEN`). No install script calls the GitHub API.
 
 ## Migrating the workspace devcontainer
 
