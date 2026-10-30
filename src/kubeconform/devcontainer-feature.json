@@ -1,0 +1,17 @@
+{
+  "id": "kubeconform",
+  "version": "1.0.0",
+  "name": "kubeconform",
+  "description": "Installs kubeconform from GitHub releases, verified against the published CHECKSUMS.",
+  "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/kubeconform",
+  "options": {
+    "version": {
+      "type": "string",
+      "default": "latest",
+      "proposals": [
+        "latest"
+      ],
+      "description": "Version to install (e.g. 0.8.0), or 'latest'."
+    }
+  }
+}

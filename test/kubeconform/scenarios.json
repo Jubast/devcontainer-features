@@ -1,0 +1,10 @@
+{
+  "pinned": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "kubeconform": {
+        "version": "0.6.7"
+      }
+    }
+  }
+}
