@@ -71,6 +71,7 @@ shipped_sha256() {
 # --- end common ---
 
 VERSION="${VERSION:-latest}"
+PLUGINS="${PLUGINS:-}"
 case "$(uname -m)" in
     x86_64|amd64) ARCH=x86_64 ;;
     aarch64|arm64) ARCH=aarch64 ;;
@@ -83,7 +84,19 @@ VERSION="$(normalize_tag "$VERSION")"
 VERSION="${VERSION#v}"
 ASSET="herdr-linux-${ARCH}"
 
+# Plugin entries: "owner/repo[/subdir][@ref]", comma separated; blanks are ignored.
+specs=()
+IFS=',' read -ra entries <<<"$PLUGINS"
+for e in "${entries[@]}"; do
+    e="${e#"${e%%[![:space:]]*}"}"; e="${e%"${e##*[![:space:]]}"}"
+    [ -n "$e" ] || continue
+    [[ "$e" =~ ^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+(/[A-Za-z0-9._/-]+)?(@[A-Za-z0-9._/-]+)?$ && "$e" != *..* ]] \
+        || { echo "Invalid plugin '$e': expected owner/repo[/subdir][@ref]." >&2; exit 1; }
+    specs+=("$e")
+done
+
 ensure_pkgs curl ca-certificates
+[ "${#specs[@]}" -eq 0 ] || ensure_pkgs git
 EXPECTED="$(shipped_sha256 "$VERSION" "$ASSET")"
 
 echo "Installing herdr ${VERSION} (${ARCH})"
@@ -92,3 +105,17 @@ verify_sha256 "${TMP_DIR}/${ASSET}" "$EXPECTED"
 
 install -m 0755 "${TMP_DIR}/${ASSET}" /usr/local/bin/herdr
 herdr --version
+
+# Plugins are per-user: install them for the container's remote user (root if unset).
+if [ "${#specs[@]}" -gt 0 ]; then
+    PLUGIN_USER="${_REMOTE_USER:-root}"
+    id "$PLUGIN_USER" >/dev/null 2>&1 || PLUGIN_USER=root
+    PLUGIN_HOME="$(getent passwd "$PLUGIN_USER" | cut -d: -f6)"
+    for spec in "${specs[@]}"; do
+        args=(--yes "${spec%%@*}")
+        [ "$spec" = "${spec%%@*}" ] || args+=(--ref "${spec#*@}")
+        echo "Installing herdr plugin ${spec} for ${PLUGIN_USER}"
+        runuser -u "$PLUGIN_USER" -- env HOME="$PLUGIN_HOME" herdr plugin install "${args[@]}" \
+            || { echo "Failed to install herdr plugin '${spec}' (unknown repo, plugin or ref?)." >&2; exit 1; }
+    done
+fi
