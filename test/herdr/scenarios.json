@@ -12,7 +12,7 @@
     "remoteUser": "vscode",
     "features": {
       "herdr": {
-        "plugins": " ogulcancelik/herdr-plugin-examples/agent-telegram-notify@18709cdc851dd63ed0543eb8388343a5446fd8d8 ,, "
+        "plugins": " persiyanov/herdr-reviewr@bff498f1a48be3b20870e30b5be8af0a48246032 ,, "
       }
     }
   }

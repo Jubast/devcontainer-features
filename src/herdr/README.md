@@ -16,7 +16,7 @@ Installs the [herdr](https://github.com/herdrdev/herdr) CLI.
 | `plugins` | string | empty | Comma-separated [herdr plugins](https://herdr.dev/docs/plugins/) to install, as GitHub `owner/repo[/subdir][@ref]`. Blank entries are ignored; the install fails if a plugin cannot be installed. Installed for the container's remote user. |
 
 ```jsonc
-"herdr": { "plugins": "ogulcancelik/herdr-plugin-examples/agent-telegram-notify@<commit-sha>" }
+"herdr": { "plugins": "persiyanov/herdr-reviewr@<commit-sha>" }
 ```
 
 ## Source and integrity
