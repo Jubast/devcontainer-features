@@ -14,3 +14,11 @@ In scope: an install script that can be made to run attacker-controlled code, sk
 - Signatures (sigstore, GPG) are not verified, and a checksum file from the same release as its artifact does not protect against a compromised upstream release. Pin versions and the feature digest to limit exposure.
 
 Details per feature are in the feature READMEs and the [Supply chain](README.md#supply-chain) section.
+
+## Release gate
+
+Pushing a `v*.*.*` tag runs `.github/workflows/release.yaml`: a `verify` job checks that the tagged commit is on `main` and runs `scripts/lint.sh`, and `publish` needs it. Limits:
+
+- A tag workflow runs the workflow file from the tagged commit, so anyone who can push tags can tag a branch with an altered `release.yaml`. Restrict who can create `v*` tags with a tag ruleset and, optionally, require reviewers on an environment for `publish`.
+- The gate runs lint, not the feature install tests. Merge only with a green `test` workflow, and require it on `main`.
+- Lint's version check compares against the previous tag, so it guards pull requests and pushes, not the tag run itself.

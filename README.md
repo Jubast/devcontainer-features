@@ -47,24 +47,20 @@ Report a vulnerability as described in [SECURITY.md](SECURITY.md).
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for adding a feature and running the checks.
-
-```sh
-scripts/lint.sh                                                                  # offline checks
-devcontainer features test -f yq -i mcr.microsoft.com/devcontainers/base:ubuntu .  # needs docker (CI runs it)
-devcontainer features test --global-scenarios-only .
-```
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the checks, adding a feature and maintainer settings.
 
 ## Release
 
-A feature is published only when its `version` in `devcontainer-feature.json` is new; the publisher skips versions that already exist in the registry. `scripts/lint.sh` fails if `src/<id>/` changed since the latest `v*` tag without a version bump.
+A feature is published only when its `version` in `devcontainer-feature.json` is new; the publisher skips versions that already exist in the registry. `scripts/lint.sh` fails if `src/<id>/` changed since the latest `v*` tag without a higher version (README-only edits are exempt; they ship with the next release, since the README is part of the published package).
 
-1. Bump `version` in each changed feature only (a patch release for a fix, e.g. `1.0.0` to `1.0.1`).
+The repository tag is independent of the feature versions: use the next unused `vX.Y.Z`. The latest tag is `v1.0.0`, so `v1.0.1` is the next release.
+
+1. Bump `version` in each changed feature only (a patch release for a fix, e.g. `1.0.1` to `1.0.2`).
 2. Merge to `main` with a green CI run.
-3. Tag the `main` commit and push the tag:
+3. Tag the `main` commit with the next unused version and push the tag:
 
 ```sh
-git tag v1.0.1 && git push origin v1.0.1
+git tag vX.Y.Z && git push origin vX.Y.Z
 ```
 
-The release workflow checks that the tagged commit is on `main` and that lint passes, then publishes the features whose version changed to `ghcr.io/jubast/devcontainer-features`. New packages are private by default: set them to public in the GitHub package settings once.
+The release workflow checks that the tagged commit is on `main` and that lint passes, then publishes the features whose version changed to `ghcr.io/jubast/devcontainer-features`. New packages are private by default: set them to public in the GitHub package settings once. The gate has limits, see [SECURITY.md](SECURITY.md#release-gate).
