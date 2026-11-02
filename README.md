@@ -15,7 +15,7 @@ Published as `ghcr.io/jubast/devcontainer-features/<id>:1`. All take a `version`
 | [`conftest`](src/conftest) | Conftest | newest upstream release | upstream `checksums.txt` |
 | [`gcm`](src/gcm) | Git Credential Manager | newest version listed in the shipped `checksums.txt` | shipped `checksums.txt` |
 | [`glab`](src/glab) | GitLab CLI | newest upstream release | upstream `checksums.txt` |
-| [`herdr`](src/herdr) | herdr | newest version listed in the shipped `checksums.txt` | shipped `checksums.txt` |
+| [`herdr`](src/herdr) | herdr, plus optional plugins | newest version listed in the shipped `checksums.txt` | shipped `checksums.txt` |
 | [`kubeconform`](src/kubeconform) | kubeconform | newest upstream release | upstream `CHECKSUMS` |
 | [`openshift-cli`](src/openshift-cli) | `oc` from mirror.openshift.com | the mirror's `stable` channel | mirror `sha256sum.txt` |
 | [`pluto`](src/pluto) | Pluto | newest upstream release | upstream `checksums.txt` |
