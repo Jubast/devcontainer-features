@@ -17,7 +17,9 @@ Run `scripts/lint.sh` before every commit; CI runs it first.
 1. `src/<id>/devcontainer-feature.json`, `install.sh` and `README.md`. Copy the `# --- common ---` block from an existing `install.sh`; it must stay identical in all features (edit it everywhere at once).
 2. Verify every download. Use the upstream checksum file when there is one; otherwise ship `src/<id>/checksums.txt` and fill it with `scripts/update-checksums.sh`. No GitHub API calls at install time, no `curl | sh`.
 3. `ensure_pkgs` everything the installer uses (bare Debian images have almost nothing), and support amd64 and arm64.
-4. `test/<id>/test.sh` with a functional assertion, plus `pinned.sh` and `scenarios.json`; add the id to the matrix in `.github/workflows/test.yaml` and to `test/_global`.
+4. `test/<id>/test.sh` with a functional assertion, plus scenario scripts (e.g. `pinned.sh`) and `scenarios.json`; add the id to the matrix in `.github/workflows/test.yaml` and to `test/_global`.
+
+In the agent harness features (`claude`, `copilot`, `codex`) each `configure.sh` holds its own harness's settings above a `# --- common ---` block that must stay identical in all of them (edit it everywhere at once).
 
 ## Change a feature
 

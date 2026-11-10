@@ -1,0 +1,46 @@
+{
+  "id": "claude",
+  "version": "1.0.0",
+  "name": "Claude Code",
+  "description": "Installs the Claude Code CLI from its official release bucket, verified against the release manifest's sha256, then adds marketplaces and plugins and merges settings each time the container is created.",
+  "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/claude",
+  "licenseURL": "https://github.com/Jubast/devcontainer-features/blob/main/LICENSE",
+  "keywords": [
+    "claude",
+    "claude-code",
+    "agents",
+    "plugins"
+  ],
+  "options": {
+    "version": {
+      "type": "string",
+      "default": "latest",
+      "proposals": [
+        "latest"
+      ],
+      "description": "Version to install (e.g. 2.1.318), or 'latest'."
+    },
+    "marketplaces": {
+      "type": "string",
+      "default": "",
+      "description": "Comma-separated marketplaces to add, as owner/repo[#ref] (GitHub) or a git URL. Empty adds none."
+    },
+    "plugins": {
+      "type": "string",
+      "default": "",
+      "description": "Comma-separated plugins to install for the user, as plugin@marketplace. Empty installs none."
+    },
+    "settings": {
+      "type": "string",
+      "default": "",
+      "description": "JSON object merged into ~/.claude/settings.json, e.g. {'model':'sonnet','env':{'EDITOR':'vim'}}. Write its quotes as single quotes: the container CLI drops double quotes. An apostrophe inside a value is written \\u0027 (\\\\u0027 in devcontainer.json). Empty changes nothing."
+    }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ],
+  "dependsOn": {
+    "ghcr.io/jubast/devcontainer-features/yq:1": {}
+  },
+  "postCreateCommand": "/usr/local/share/devcontainer-features/claude/configure.sh apply"
+}

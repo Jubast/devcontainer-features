@@ -1,0 +1,46 @@
+{
+  "id": "copilot",
+  "version": "1.0.0",
+  "name": "GitHub Copilot CLI",
+  "description": "Installs the GitHub Copilot CLI from GitHub releases, verified against the release's SHA256SUMS.txt, then adds marketplaces and plugins and merges settings each time the container is created.",
+  "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/copilot",
+  "licenseURL": "https://github.com/Jubast/devcontainer-features/blob/main/LICENSE",
+  "keywords": [
+    "copilot",
+    "github",
+    "agents",
+    "plugins"
+  ],
+  "options": {
+    "version": {
+      "type": "string",
+      "default": "latest",
+      "proposals": [
+        "latest"
+      ],
+      "description": "Version to install (e.g. 1.0.108), or 'latest'."
+    },
+    "marketplaces": {
+      "type": "string",
+      "default": "",
+      "description": "Comma-separated marketplaces to add, as owner/repo[#ref] (GitHub) or a git URL. Empty adds none."
+    },
+    "plugins": {
+      "type": "string",
+      "default": "",
+      "description": "Comma-separated plugins to install for the user, as plugin@marketplace. Empty installs none."
+    },
+    "settings": {
+      "type": "string",
+      "default": "",
+      "description": "JSON object merged into ~/.copilot/settings.json, e.g. {'model':'claude-sonnet-5.5','footer':{'showQuota':false}}. Write its quotes as single quotes: the container CLI drops double quotes. An apostrophe inside a value is written \\u0027 (\\\\u0027 in devcontainer.json). Empty changes nothing."
+    }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ],
+  "dependsOn": {
+    "ghcr.io/jubast/devcontainer-features/yq:1": {}
+  },
+  "postCreateCommand": "/usr/local/share/devcontainer-features/copilot/configure.sh apply"
+}

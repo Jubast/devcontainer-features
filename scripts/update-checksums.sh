@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Maintainer tool: add a release's assets to src/<feature>/checksums.txt.
-# usage: scripts/update-checksums.sh <herdr|gcm|shellcheck> <version>...
+# usage: scripts/update-checksums.sh <herdr|gcm|shellcheck|codex> <version>...
 # Hashes are computed from the downloaded assets and cross-checked against the digest
 # GitHub records for them (GITHUB_TOKEN is used for the API if set). Review the diff.
 set -euo pipefail
@@ -9,10 +9,12 @@ cd "$(dirname "$0")/.." || exit 1
 [ "$#" -ge 2 ] || { sed -n '2,3p' "$0" | sed 's/^# //' >&2; exit 2; }
 feature="$1"; shift
 
+tag_prefix=v # release tags are <prefix><version>
 case "$feature" in
     herdr) repo=herdrdev/herdr ;;
     gcm) repo=git-ecosystem/git-credential-manager ;;
     shellcheck) repo=koalaman/shellcheck ;;
+    codex) repo=openai/codex tag_prefix=rust-v ;;
     *) echo "Unknown feature: $feature" >&2; exit 2 ;;
 esac
 
@@ -21,6 +23,7 @@ assets() { # version
         herdr) echo herdr-linux-x86_64 herdr-linux-aarch64 ;;
         gcm) echo "gcm-linux-x64-$1.deb" "gcm-linux-arm64-$1.deb" ;;
         shellcheck) echo "shellcheck-v$1.linux.x86_64.tar.xz" "shellcheck-v$1.linux.aarch64.tar.xz" ;;
+        codex) echo codex-x86_64-unknown-linux-musl.tar.gz codex-aarch64-unknown-linux-musl.tar.gz ;;
     esac
 }
 
@@ -32,11 +35,11 @@ for version in "$@"; do
     version="${version#v}"
     [[ "$version" =~ ^[0-9]+(\.[0-9]+){1,2}$ ]] || { echo "Invalid version: $version" >&2; exit 2; }
     api="$(curl -fsSL ${GITHUB_TOKEN:+-H "Authorization: Bearer $GITHUB_TOKEN"} \
-        "https://api.github.com/repos/$repo/releases/tags/v$version")" \
-        || { echo "Release v$version not found in $repo (or API rate limited)." >&2; exit 1; }
+        "https://api.github.com/repos/$repo/releases/tags/$tag_prefix$version")" \
+        || { echo "Release $tag_prefix$version not found in $repo (or API rate limited)." >&2; exit 1; }
     for asset in $(assets "$version"); do
         if grep -qE "^$version $asset " "$file" 2>/dev/null; then echo "skip (listed): $version $asset"; continue; fi
-        curl -fsSL --retry 3 -o "$tmp/$asset" "https://github.com/$repo/releases/download/v$version/$asset"
+        curl -fsSL --retry 3 -o "$tmp/$asset" "https://github.com/$repo/releases/download/$tag_prefix$version/$asset"
         sha="$(sha256sum "$tmp/$asset" | cut -d' ' -f1)"
         recorded="$(jq -r --arg n "$asset" '.assets[] | select(.name == $n) | .digest // empty' <<<"$api" | sed 's/^sha256://')"
         if [ -z "$recorded" ]; then
