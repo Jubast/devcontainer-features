@@ -15,6 +15,9 @@ check "oc on PATH" command -v oc
 check "kubeconform on PATH" command -v kubeconform
 check "pluto on PATH" command -v pluto
 check "yq on PATH" command -v yq
+check "claude on PATH" command -v claude
+check "codex on PATH" command -v codex
+check "copilot on PATH" command -v copilot
 check "conftest on PATH" command -v conftest
 check "shellcheck on PATH" command -v shellcheck
 check "yamllint on PATH" command -v yamllint

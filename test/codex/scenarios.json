@@ -1,0 +1,21 @@
+{
+  "pinned": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "codex": {
+        "version": "0.166.0"
+      }
+    }
+  },
+  "configured": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "remoteUser": "vscode",
+    "features": {
+      "codex": {
+        "marketplaces": " Jubast/common-agent-marketplace@v0.2.1 ,, ",
+        "plugins": "conventional-changes@common-agent-marketplace",
+        "settings": "{'model':'o3','history':{'persistence':'none'}}"
+      }
+    }
+  }
+}

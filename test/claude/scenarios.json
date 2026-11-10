@@ -1,0 +1,21 @@
+{
+  "pinned": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "claude": {
+        "version": "2.1.318"
+      }
+    }
+  },
+  "configured": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "remoteUser": "vscode",
+    "features": {
+      "claude": {
+        "marketplaces": " Jubast/common-agent-marketplace#v0.2.1 ,, ",
+        "plugins": "chief@common-agent-marketplace",
+        "settings": "{'model':'sonnet','env':{'EDITOR':'vim'}}"
+      }
+    }
+  }
+}

@@ -47,7 +47,7 @@ for f in src/*/checksums.txt; do
     done < <(awk '$1 !~ /^#/ && NF { print $1 }' "$f" | sort -u)
     grep -q checksums.txt "src/$id/README.md" || err "$id: README does not mention checksums.txt"
 done
-for id in herdr gcm shellcheck; do [ -f "src/$id/checksums.txt" ] || err "$id: checksums.txt missing"; done
+for id in herdr gcm shellcheck codex; do [ -f "src/$id/checksums.txt" ] || err "$id: checksums.txt missing"; done
 
 echo "declared dependencies"
 # Bare images (debian:12) have none of these; each installer must ensure what it uses.
@@ -98,6 +98,12 @@ echo "common block"
 common() { sed -n '/^# --- common/,/^# --- end common/p' "$1" | sha256sum; }
 ref="$(common src/yq/install.sh)"
 for f in src/*/install.sh; do [ "$(common "$f")" = "$ref" ] || err "$f: common block differs from src/yq/install.sh"; done
+# Harness features keep their harness-specific part outside this block.
+ref=""
+for f in src/*/configure.sh; do
+    [ -n "$ref" ] || ref="$(common "$f")"
+    [ "$(common "$f")" = "$ref" ] || err "$f: common block differs from the other configure.sh files"
+done
 
 echo "fail-closed logic"
 bash scripts/test-common.sh >/dev/null || err "scripts/test-common.sh (run it for details)"

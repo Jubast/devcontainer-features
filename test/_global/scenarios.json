@@ -2,7 +2,10 @@
   "all": {
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
     "features": {
+      "claude": {},
+      "codex": {},
       "conftest": {},
+      "copilot": {},
       "gcm": {},
       "glab": {},
       "herdr": {},
@@ -17,7 +20,10 @@
   "all-debian": {
     "image": "debian:12",
     "features": {
+      "claude": {},
+      "codex": {},
       "conftest": {},
+      "copilot": {},
       "gcm": {},
       "glab": {},
       "herdr": {},
@@ -33,7 +39,10 @@
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
     "remoteUser": "vscode",
     "features": {
+      "claude": {},
+      "codex": {},
       "conftest": {},
+      "copilot": {},
       "gcm": {},
       "glab": {},
       "herdr": {},

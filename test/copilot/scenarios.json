@@ -1,0 +1,21 @@
+{
+  "pinned": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "copilot": {
+        "version": "1.0.100"
+      }
+    }
+  },
+  "configured": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "remoteUser": "vscode",
+    "features": {
+      "copilot": {
+        "marketplaces": " Jubast/common-agent-marketplace#v0.2.1 ,, ",
+        "plugins": "conventional-changes@common-agent-marketplace",
+        "settings": "{'model':'claude-sonnet-5.5','footer':{'showQuota':false}}"
+      }
+    }
+  }
+}
