@@ -14,15 +14,12 @@ Published as `ghcr.io/jubast/devcontainer-features/<id>:1`. All take a `version`
 | --- | --- | --- | --- |
 | [`claude`](src/claude) | Claude Code, plus optional marketplaces and plugins | newest upstream release | release `manifest.json` |
 | [`codex`](src/codex) | Codex CLI, plus optional marketplaces and plugins | newest version listed in the shipped `checksums.txt` | shipped `checksums.txt` |
-| [`conftest`](src/conftest) | Conftest | newest upstream release | upstream `checksums.txt` |
 | [`copilot`](src/copilot) | GitHub Copilot CLI, plus optional marketplaces and plugins | newest upstream release | upstream `SHA256SUMS.txt` |
 | [`gcm`](src/gcm) | Git Credential Manager | newest version listed in the shipped `checksums.txt` | shipped `checksums.txt` |
 | [`glab`](src/glab) | GitLab CLI | newest upstream release | upstream `checksums.txt` |
 | [`herdr`](src/herdr) | herdr, plus optional plugins | newest version listed in the shipped `checksums.txt` | shipped `checksums.txt` |
 | [`herdr-core`](src/herdr-core) | herdr-core (`hc`), the core behind the herdr app | newest version listed in the shipped `checksums.txt` | shipped `checksums.txt` |
-| [`kubeconform`](src/kubeconform) | kubeconform | newest upstream release | upstream `CHECKSUMS` |
-| [`openshift-cli`](src/openshift-cli) | `oc` from mirror.openshift.com | the mirror's `stable` channel | mirror `sha256sum.txt` |
-| [`pluto`](src/pluto) | Pluto | newest upstream release | upstream `checksums.txt` |
+| [`kubernetes`](src/kubernetes) | kubectl, plus optional `extensions`: helm, kustomize, oc, kubeconform, pluto, conftest | newest upstream release (`oc`: the mirror's `stable` channel) | upstream sha256 files, per tool |
 | [`shellcheck`](src/shellcheck) | ShellCheck | the distro apt package (can be older than upstream) | `latest`: signed apt archive; pinned: shipped `checksums.txt` |
 | [`yamllint`](src/yamllint) | yamllint | the distro apt package (can be older than upstream) | `latest`: signed apt archive; pinned: none (PyPI over TLS) |
 | [`yq`](src/yq) | mikefarah/yq v4 | newest upstream release | upstream `checksums` (SHA-256 column) |
@@ -32,11 +29,24 @@ Usage:
 ```jsonc
 "features": {
     "ghcr.io/jubast/devcontainer-features/yq:1": {},
-    "ghcr.io/jubast/devcontainer-features/conftest:1": { "version": "0.71.1" }
+    "ghcr.io/jubast/devcontainer-features/kubernetes:1": { "extensions": "helm:3.16.2,oc" }
 }
 ```
 
-Not here, use the official features: kubectl/helm, python, node, dotnet, github-cli, azure-cli, common-utils.
+## Kubernetes tools
+
+The `kubernetes` feature installs kubectl and the fixed set of `extensions` you list (`helm`, `kustomize`, `oc`, `kubeconform`, `pluto`, `conftest`); `name:version` pins one. Each extension is defined in the installer with its own verified download; unknown names fail the install. kubectl and helm are included so one feature gives a complete, checksum-verified Kubernetes toolset (Microsoft's `kubectl-helm-minikube` covers only kubectl, helm and minikube). See [its README](src/kubernetes/README.md).
+
+| Removed feature | Replacement |
+| --- | --- |
+| `conftest` | `kubernetes` with `"extensions": "conftest"` |
+| `kubeconform` | `kubernetes` with `"extensions": "kubeconform"` |
+| `openshift-cli` | `kubernetes` with `"extensions": "oc"` |
+| `pluto` | `kubernetes` with `"extensions": "pluto"` |
+
+The old `version` option becomes the pin: `"extensions": "oc:4.16.20"`. The `kubernetes` feature's own `version` is the kubectl version.
+
+Not here, use the official features: python, node, dotnet, github-cli, azure-cli, common-utils.
 
 ## Agent harness features
 
