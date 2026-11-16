@@ -1,0 +1,27 @@
+{
+  "id": "herdr-core",
+  "version": "1.0.0",
+  "name": "herdr-core",
+  "description": "Installs herdr-core (hc), the terminal core behind the herdr app, verified against the sha256 shipped in the feature's checksums.txt.",
+  "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/herdr-core",
+  "licenseURL": "https://github.com/Jubast/devcontainer-features/blob/main/LICENSE",
+  "keywords": [
+    "herdr",
+    "herdr-core",
+    "terminal",
+    "agents"
+  ],
+  "options": {
+    "version": {
+      "type": "string",
+      "default": "latest",
+      "proposals": [
+        "latest"
+      ],
+      "description": "Version to install (e.g. 0.1.21), or 'latest'."
+    }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
+}

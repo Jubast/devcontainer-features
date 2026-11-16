@@ -4,6 +4,7 @@ set -e
 source dev-container-features-test-lib
 
 check "herdr on PATH" command -v herdr
+check "hc on PATH" command -v hc
 check "git-credential-manager on PATH" command -v git-credential-manager
 check "glab on PATH" command -v glab
 check "oc on PATH" command -v oc
