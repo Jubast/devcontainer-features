@@ -47,7 +47,7 @@ for f in src/*/checksums.txt; do
     done < <(awk '$1 !~ /^#/ && NF { print $1 }' "$f" | sort -u)
     grep -q checksums.txt "src/$id/README.md" || err "$id: README does not mention checksums.txt"
 done
-for id in herdr gcm shellcheck codex; do [ -f "src/$id/checksums.txt" ] || err "$id: checksums.txt missing"; done
+for id in herdr herdr-core gcm shellcheck codex; do [ -f "src/$id/checksums.txt" ] || err "$id: checksums.txt missing"; done
 
 echo "declared dependencies"
 # Bare images (debian:12) have none of these; each installer must ensure what it uses.

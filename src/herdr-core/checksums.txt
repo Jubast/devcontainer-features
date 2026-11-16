@@ -1,0 +1,6 @@
+# herdr-core release assets: <version> <asset> <sha256>
+# Maintained with scripts/update-checksums.sh; "latest" installs the newest version listed here.
+0.1.20 herdr-core-linux-x86_64.tar.gz ac6b86890c451a37584620aaa438b71bc0d0bd430a2e7c1d7e095f052c414e74
+0.1.20 herdr-core-linux-aarch64.tar.gz 5f3037379d15cc76cfc72d2fd1a4262ea1c5b24df278bf7cfd8adcff7b914862
+0.1.21 herdr-core-linux-x86_64.tar.gz 78424755c10a40dde38a0bdb55c20ac19706e9ae05ed68fc2acf1fcff0d941c1
+0.1.21 herdr-core-linux-aarch64.tar.gz e844a2bfab48a226097679d076bc83042fe57fccef5387ef802e5b24e78b529a

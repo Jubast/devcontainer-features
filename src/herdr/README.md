@@ -1,6 +1,6 @@
 # herdr (`herdr`)
 
-Installs the [herdr](https://github.com/herdrdev/herdr) CLI.
+Installs the [herdr](https://github.com/herdrdev/herdr) CLI. For the core used by the herdr app, see [`herdr-core`](../herdr-core).
 
 ```jsonc
 "features": {
