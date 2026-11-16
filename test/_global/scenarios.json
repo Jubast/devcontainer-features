@@ -10,6 +10,7 @@
       "herdr": {},
       "herdr-core": {},
       "kubernetes": { "extensions": "helm,kustomize,oc,kubeconform,pluto,conftest" },
+      "orca": {},
       "shellcheck": {},
       "yamllint": {},
       "yq": {}
@@ -26,6 +27,7 @@
       "herdr": {},
       "herdr-core": {},
       "kubernetes": { "extensions": "helm,kustomize,oc,kubeconform,pluto,conftest" },
+      "orca": {},
       "shellcheck": {},
       "yamllint": {},
       "yq": {}
@@ -43,6 +45,7 @@
       "herdr": {},
       "herdr-core": {},
       "kubernetes": { "extensions": "helm,kustomize,oc,kubeconform,pluto,conftest" },
+      "orca": {},
       "shellcheck": {},
       "yamllint": {},
       "yq": {}
