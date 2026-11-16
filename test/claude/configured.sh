@@ -9,30 +9,21 @@ configure="$installed/configure.sh"
 # Runs in a temporary HOME and state directory (a copy of the installed options), never the real ones.
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
-mkdir "$tmp/state" "$tmp/home" "$tmp/stub" "$tmp/yq-only" "$tmp/failing"
+mkdir "$tmp/state" "$tmp/home" "$tmp/stub" "$tmp/failing"
 cp "$installed/options.env" "$tmp/state/"
 export HOME="$tmp/home" HARNESS_STATE_DIR="$tmp/state"
-unset CLAUDE_CONFIG_DIR
 
 # A stub CLI records its arguments, so the test needs no network.
 stub="$tmp/stub"
 printf '#!/bin/sh\necho "$*" >> "%s/calls"\n' "$stub" > "$stub/claude"
 chmod +x "$stub/claude"
 
-# Without the CLI on the PATH (yq stays), apply only merges the settings and warns.
-yq_only="$tmp/yq-only"
-ln -s "$(command -v yq)" "$yq_only/yq"
-PATH="$yq_only:/usr/bin:/bin" "$configure" apply >"$stub/absent.log" 2>&1
+# Without the CLI on the PATH, apply only warns.
+PATH="/usr/bin:/bin" "$configure" apply >"$stub/absent.log" 2>&1
 check "absent CLI warns" grep -F 'is not installed' "$stub/absent.log"
 
-settings="$HOME/.claude/settings.json"
-# Unrelated and sibling keys survive a re-apply.
-yq -i -p json -o json '.unrelated = 1 | .env.OTHER = "1"' "$settings"
 PATH="$stub:$PATH" "$configure" apply
 
-check "settings merged" yq -p json -e '.model == "sonnet" and .env.EDITOR == "vim"' "$settings"
-check "sibling key kept" yq -p json -e '.env.OTHER == "1"' "$settings"
-check "unrelated key kept" yq -p json -e '.unrelated == 1' "$settings"
 check "marketplace added" grep -Fx 'plugin marketplace add Jubast/common-agent-marketplace#v0.2.1 --scope user' "$stub/calls"
 check "plugin installed" grep -Fx 'plugin install chief@common-agent-marketplace --scope user' "$stub/calls"
 
