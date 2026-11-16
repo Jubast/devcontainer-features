@@ -12,10 +12,10 @@ Published as `ghcr.io/jubast/devcontainer-features/<id>:1`. All take a `version`
 
 | Id | Installs | `latest` means | Integrity check |
 | --- | --- | --- | --- |
-| [`claude`](src/claude) | Claude Code, plus optional marketplaces, plugins and settings | newest upstream release | release `manifest.json` |
-| [`codex`](src/codex) | Codex CLI, plus optional marketplaces, plugins and settings | newest version listed in the shipped `checksums.txt` | shipped `checksums.txt` |
+| [`claude`](src/claude) | Claude Code, plus optional marketplaces and plugins | newest upstream release | release `manifest.json` |
+| [`codex`](src/codex) | Codex CLI, plus optional marketplaces and plugins | newest version listed in the shipped `checksums.txt` | shipped `checksums.txt` |
 | [`conftest`](src/conftest) | Conftest | newest upstream release | upstream `checksums.txt` |
-| [`copilot`](src/copilot) | GitHub Copilot CLI, plus optional marketplaces, plugins and settings | newest upstream release | upstream `SHA256SUMS.txt` |
+| [`copilot`](src/copilot) | GitHub Copilot CLI, plus optional marketplaces and plugins | newest upstream release | upstream `SHA256SUMS.txt` |
 | [`gcm`](src/gcm) | Git Credential Manager | newest version listed in the shipped `checksums.txt` | shipped `checksums.txt` |
 | [`glab`](src/glab) | GitLab CLI | newest upstream release | upstream `checksums.txt` |
 | [`herdr`](src/herdr) | herdr, plus optional plugins | newest version listed in the shipped `checksums.txt` | shipped `checksums.txt` |
@@ -39,7 +39,7 @@ Not here, use the official features: kubectl/helm, python, node, dotnet, github-
 
 ## Agent harness features
 
-`claude`, `copilot` and `codex` install an agent CLI and share the options `marketplaces`, `plugins` and `settings`, applied on every container create; see each feature's README for details. They depend on this repository's `yq` feature.
+`claude`, `copilot` and `codex` install an agent CLI and share the options `marketplaces` and `plugins`, applied on every container create; see each feature's README for details. `claude` depends on this repository's `yq` feature.
 
 ## Supply chain
 

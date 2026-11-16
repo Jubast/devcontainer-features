@@ -13,8 +13,7 @@
     "features": {
       "claude": {
         "marketplaces": " Jubast/common-agent-marketplace#v0.2.1 ,, ",
-        "plugins": "chief@common-agent-marketplace",
-        "settings": "{'model':'sonnet','env':{'EDITOR':'vim'}}"
+        "plugins": "chief@common-agent-marketplace"
       }
     }
   }
