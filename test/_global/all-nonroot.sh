@@ -9,6 +9,7 @@ home_has_no_root_files() { [ -z "$(find "$HOME/.config" "$HOME/.local" -user roo
 
 check "runs as a non-root user" is_not_root
 check "herdr on PATH" command -v herdr
+check "hc on PATH" command -v hc
 check "git-credential-manager on PATH" command -v git-credential-manager
 check "glab on PATH" command -v glab
 check "oc on PATH" command -v oc
