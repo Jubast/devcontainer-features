@@ -5,6 +5,7 @@ source dev-container-features-test-lib
 
 check "herdr on PATH" command -v herdr
 check "hc on PATH" command -v hc
+check "orca-ide on PATH" command -v orca-ide
 check "git-credential-manager on PATH" command -v git-credential-manager
 check "glab on PATH" command -v glab
 for tool in kubectl helm kustomize oc kubeconform pluto conftest; do

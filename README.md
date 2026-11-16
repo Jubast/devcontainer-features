@@ -20,6 +20,7 @@ Published as `ghcr.io/jubast/devcontainer-features/<id>:1`. All take a `version`
 | [`herdr`](src/herdr) | herdr, plus optional plugins | newest version listed in the shipped `checksums.txt` | shipped `checksums.txt` |
 | [`herdr-core`](src/herdr-core) | herdr-core (`hc`), the core behind the herdr app | newest version listed in the shipped `checksums.txt` | shipped `checksums.txt` |
 | [`kubernetes`](src/kubernetes) | kubectl, plus optional `extensions`: helm, kustomize, oc, kubeconform, pluto, conftest | newest upstream release (`oc`: the mirror's `stable` channel) | upstream sha256 files, per tool |
+| [`orca`](src/orca) | Orca server (`orca-ide`) | newest upstream release | upstream `orca-server-sha256sums.txt` |
 | [`shellcheck`](src/shellcheck) | ShellCheck | the distro apt package (can be older than upstream) | `latest`: signed apt archive; pinned: shipped `checksums.txt` |
 | [`yamllint`](src/yamllint) | yamllint | the distro apt package (can be older than upstream) | `latest`: signed apt archive; pinned: none (PyPI over TLS) |
 | [`yq`](src/yq) | mikefarah/yq v4 | newest upstream release | upstream `checksums` (SHA-256 column) |

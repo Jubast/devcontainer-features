@@ -1,0 +1,27 @@
+{
+  "id": "orca",
+  "version": "1.0.0",
+  "name": "Orca",
+  "description": "Installs the Orca (onorca.dev) server-only build as orca-ide, verified against the release's orca-server-sha256sums.txt.",
+  "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/orca",
+  "licenseURL": "https://github.com/Jubast/devcontainer-features/blob/main/LICENSE",
+  "keywords": [
+    "orca",
+    "orca-ide",
+    "agents",
+    "headless"
+  ],
+  "options": {
+    "version": {
+      "type": "string",
+      "default": "latest",
+      "proposals": [
+        "latest"
+      ],
+      "description": "Version to install (e.g. 1.4.261), or 'latest'."
+    }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
+}
