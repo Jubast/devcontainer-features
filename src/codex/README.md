@@ -1,6 +1,6 @@
 # Codex CLI (`codex`)
 
-Installs the [Codex CLI](https://developers.openai.com/codex/plugins) and configures it each time the container is created: adds marketplaces, installs plugins.
+Installs the [Codex CLI](https://developers.openai.com/codex/plugins) and configures it each time the container is created: adds marketplaces and installs plugins.
 
 ```jsonc
 "features": {

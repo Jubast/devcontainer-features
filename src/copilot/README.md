@@ -1,6 +1,6 @@
 # GitHub Copilot CLI (`copilot`)
 
-Installs the [GitHub Copilot CLI](https://docs.github.com/copilot/concepts/agents/copilot-cli/about-cli-plugins) and configures it each time the container is created: adds marketplaces, installs plugins.
+Installs the [GitHub Copilot CLI](https://docs.github.com/copilot/concepts/agents/copilot-cli/about-cli-plugins) and configures it each time the container is created: adds marketplaces and installs plugins.
 
 ```jsonc
 "features": {
