@@ -1,0 +1,19 @@
+{
+  "extensions": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "kubernetes": {
+        "extensions": "helm, kustomize,oc,kubeconform,pluto,conftest"
+      }
+    }
+  },
+  "pinned": {
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+      "kubernetes": {
+        "version": "1.31.0",
+        "extensions": "helm:3.16.2,kustomize:5.4.3,oc:4.16.20,kubeconform:0.6.7"
+      }
+    }
+  }
+}

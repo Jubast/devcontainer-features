@@ -14,15 +14,12 @@ Published as `ghcr.io/jubast/devcontainer-features/<id>:1`. All take a `version`
 | --- | --- | --- | --- |
 | [`claude`](src/claude) | Claude Code, plus optional marketplaces and plugins | newest upstream release | release `manifest.json` |
 | [`codex`](src/codex) | Codex CLI, plus optional marketplaces and plugins | newest version listed in the shipped `checksums.txt` | shipped `checksums.txt` |
-| [`conftest`](src/conftest) | Conftest | newest upstream release | upstream `checksums.txt` |
 | [`copilot`](src/copilot) | GitHub Copilot CLI, plus optional marketplaces and plugins | newest upstream release | upstream `SHA256SUMS.txt` |
 | [`gcm`](src/gcm) | Git Credential Manager | newest version listed in the shipped `checksums.txt` | shipped `checksums.txt` |
 | [`glab`](src/glab) | GitLab CLI | newest upstream release | upstream `checksums.txt` |
 | [`herdr`](src/herdr) | herdr, plus optional plugins | newest version listed in the shipped `checksums.txt` | shipped `checksums.txt` |
 | [`herdr-core`](src/herdr-core) | herdr-core (`hc`), the core behind the herdr app | newest version listed in the shipped `checksums.txt` | shipped `checksums.txt` |
-| [`kubeconform`](src/kubeconform) | kubeconform | newest upstream release | upstream `CHECKSUMS` |
-| [`openshift-cli`](src/openshift-cli) | `oc` from mirror.openshift.com | the mirror's `stable` channel | mirror `sha256sum.txt` |
-| [`pluto`](src/pluto) | Pluto | newest upstream release | upstream `checksums.txt` |
+| [`kubernetes`](src/kubernetes) | kubectl, plus optional `extensions`: helm, kustomize, oc, kubeconform, pluto, conftest | newest upstream release (`oc`: the mirror's `stable` channel) | upstream sha256 files, per tool |
 | [`shellcheck`](src/shellcheck) | ShellCheck | the distro apt package (can be older than upstream) | `latest`: signed apt archive; pinned: shipped `checksums.txt` |
 | [`yamllint`](src/yamllint) | yamllint | the distro apt package (can be older than upstream) | `latest`: signed apt archive; pinned: none (PyPI over TLS) |
 | [`yq`](src/yq) | mikefarah/yq v4 | newest upstream release | upstream `checksums` (SHA-256 column) |
@@ -32,11 +29,22 @@ Usage:
 ```jsonc
 "features": {
     "ghcr.io/jubast/devcontainer-features/yq:1": {},
-    "ghcr.io/jubast/devcontainer-features/conftest:1": { "version": "0.71.1" }
+    "ghcr.io/jubast/devcontainer-features/kubernetes:1": { "extensions": "helm:3.16.2,oc" }
 }
 ```
 
-Not here, use the official features: kubectl/helm, python, node, dotnet, github-cli, azure-cli, common-utils.
+## Kubernetes tools
+
+The `kubernetes` feature installs kubectl and the fixed set of `extensions` you list (`helm`, `kustomize`, `oc`, `kubeconform`, `pluto`, `conftest`); `name:version` pins one. Each extension is defined in the installer with its own verified download; unknown names fail the install. kubectl and helm are included so one feature gives a complete Kubernetes toolset. See [its README](src/kubernetes/README.md).
+
+| Removed feature | Replacement |
+| --- | --- |
+| `conftest` | `kubernetes` with `"extensions": "conftest"` |
+| `kubeconform` | `kubernetes` with `"extensions": "kubeconform"` |
+| `openshift-cli` | `kubernetes` with `"extensions": "oc"` |
+| `pluto` | `kubernetes` with `"extensions": "pluto"` |
+
+Not here, use the official features: python, node, dotnet, github-cli, azure-cli, common-utils.
 
 ## Agent harness features
 
@@ -46,7 +54,7 @@ Not here, use the official features: kubectl/helm, python, node, dotnet, github-
 
 - **Checksums.** Each install downloads the upstream checksum file next to the artifact, compares sha256 and aborts on a mismatch or a missing entry. Where upstream publishes none (herdr, herdr-core, gcm, codex, pinned shellcheck), the sha256 values are committed in the feature's `checksums.txt` and only listed versions can be installed. The one exception is yamllint pinned to a version, which comes from PyPI over TLS with no hash check and unpinned dependencies; use the distro package (`latest`) if that matters. Each feature README states which applies.
 - **Limits.** An upstream checksum file comes from the same release as the artifact, so it catches corruption and swapped assets, not a compromised upstream release. Pin versions and review upgrades to limit that exposure. Signatures (sigstore, GPG) are not verified.
-- **Pinning.** Set `version` to an exact release (`"version": "0.71.1"`; for `oc` a mirror directory such as `4.16.20`). To pin the feature itself, use its digest instead of a tag: `ghcr.io/jubast/devcontainer-features/yq@sha256:<digest>` (the digest is shown on the package page; the dev container CLI can also record it in `devcontainer-lock.json`).
+- **Pinning.** Set `version` to an exact release (`"version": "4.44.3"`). For the Kubernetes tools, pin each extension with `name:version` (`"extensions": "oc:4.16.20"`). To pin the feature itself, use its digest instead of a tag: `ghcr.io/jubast/devcontainer-features/yq@sha256:<digest>` (the digest is shown on the package page; the dev container CLI can also record it in `devcontainer-lock.json`).
 - **Shipped checksums.** For herdr, herdr-core, gcm, codex and pinned shellcheck, `src/<id>/checksums.txt` lists `<version> <asset> <sha256>`. For herdr, herdr-core, gcm and codex `latest` means the newest *listed* version: updating is a reviewed PR that runs `scripts/update-checksums.sh <id> <version>` (hashes the downloaded assets and cross-checks the digest GitHub records; maintainers only, may use `GITHUB_TOKEN`). No install script calls the GitHub API.
 - **Transport.** Downloads use HTTPS only (also across redirects) and TLS 1.2 or newer. Nothing is piped into a shell: files are downloaded to a temp dir, verified, then installed. The `version` input is validated before it reaches a URL.
 - **CI.** Workflows use only `actions/*` and `devcontainers/*`, pinned to full commit SHAs, with `contents: read`; `packages: write` only on the publish job. The devcontainer CLI is pinned to an exact version. `scripts/lint.sh` enforces these rules.

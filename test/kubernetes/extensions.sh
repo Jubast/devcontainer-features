@@ -8,12 +8,18 @@ fails() { ! "$@"; }
 d="$(mktemp -d)"
 cd "$d"
 
-check "kubeconform on PATH" command -v kubeconform
-check "kubeconform runs" kubeconform -v
+for tool in kubectl helm kustomize oc kubeconform pluto conftest; do
+    check "$tool on PATH" command -v "$tool"
+done
+check "helm runs" helm version --short
+check "kustomize runs" kustomize version
+check "oc runs" oc version --client
+check "pluto runs" pluto version
+check "conftest runs" conftest --version
 
-# A minimal local schema keeps the test offline.
+# A minimal local schema keeps the kubeconform test offline.
 mkdir schemas
-cat > schemas/configmap-v1.json <<'EOF'
+cat > schemas/configmap-v1.json <<'EOS'
 {
   "type": "object",
   "properties": {
@@ -24,7 +30,7 @@ cat > schemas/configmap-v1.json <<'EOF'
   },
   "required": ["kind", "apiVersion"]
 }
-EOF
+EOS
 printf 'apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: x\ndata:\n  a: b\n' > ok.yaml
 printf 'apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: x\ndata: notamap\n' > bad.yaml
 SCHEMAS="$d/schemas/{{ .ResourceKind }}{{ .KindSuffix }}.json"

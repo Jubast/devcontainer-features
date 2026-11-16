@@ -1,0 +1,39 @@
+{
+  "id": "kubernetes",
+  "version": "1.0.0",
+  "name": "Kubernetes tools",
+  "description": "Installs kubectl, plus optional extensions (helm, kustomize, oc, kubeconform, pluto, conftest), each verified against its published sha256.",
+  "documentationURL": "https://github.com/Jubast/devcontainer-features/tree/main/src/kubernetes",
+  "licenseURL": "https://github.com/Jubast/devcontainer-features/blob/main/LICENSE",
+  "keywords": [
+    "kubernetes",
+    "kubectl",
+    "helm",
+    "kustomize",
+    "openshift",
+    "oc"
+  ],
+  "options": {
+    "version": {
+      "type": "string",
+      "default": "latest",
+      "proposals": [
+        "latest"
+      ],
+      "description": "kubectl version to install (e.g. 1.31.0), or 'latest' (the current stable release)."
+    },
+    "extensions": {
+      "type": "string",
+      "default": "",
+      "proposals": [
+        "helm,kustomize",
+        "oc",
+        "kubeconform,pluto,conftest"
+      ],
+      "description": "Comma-separated extensions from the supported set: conftest, helm, kubeconform, kustomize, oc, pluto. Append :version to pin one (e.g. helm:3.16.2,oc:stable-4.16). Empty installs none; an unknown name fails the install."
+    }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
+}
